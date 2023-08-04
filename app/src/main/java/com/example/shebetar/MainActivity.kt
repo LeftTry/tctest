@@ -7,10 +7,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
@@ -28,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -35,6 +42,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.idapgroup.autosizetext.AutoSizeText
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -71,7 +79,7 @@ var posts = listOf(
 fun HomeScreen(navController: NavHostController) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp)
+        contentPadding = PaddingValues(10.dp)
     ) {
         items(posts) { post ->
             PostItem(post)
@@ -94,18 +102,42 @@ fun HomeScreen(navController: NavHostController) {
 
 @Composable
 fun PostItem(post: Post) {
+    var like by remember { mutableStateOf(Icons.Default.FavoriteBorder)}
+    var liked = false
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 16.dp)
+            .padding(bottom = 5.dp)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
                 text = post.content,
+                fontSize = 18.sp,
                 style = TextStyle(fontSize = 14.sp)
             )
+            Row (
+                modifier = Modifier.fillMaxSize()
+            ){
+                IconButton(onClick = {
+                    if (!liked) {
+                        like = Icons.Default.Favorite
+                        liked = true
+                    }
+                    else{
+                        like = Icons.Default.FavoriteBorder
+                        liked = false
+                }}) {
+                    Icon(imageVector = like, contentDescription = "Like")
+                }
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "Share")
+                }
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(imageVector = Icons.Default.Face, contentDescription = "Comments")
+                }
+            }
         }
     }
 }
@@ -227,10 +259,20 @@ fun BottomNavigationBar(navController: NavHostController) {
 @Composable
 fun PostCreationPage(navController: NavHostController){
     val text = remember {mutableStateOf("")}
+    IconButton(
+        modifier = Modifier
+            .background(shape = RoundedCornerShape(50), color = Color.Transparent)
+            .padding(start = 10.dp, top = 10.dp),
+        onClick = { navController.navigate("home")}) {
+        Icon(
+            imageVector = Icons.Default.Close,
+            contentDescription = "Close"
+        )
+    }
     Column (
         modifier = Modifier.fillMaxSize()
     ){
-            Button(
+        Button(
                 onClick = {
                     createPost(text.value)
                     navController.navigate("home")
@@ -239,7 +281,8 @@ fun PostCreationPage(navController: NavHostController){
                     .background(shape = RoundedCornerShape(50), color = Color.Transparent)
                     .padding(end = 10.dp, top = 10.dp)
                     .align(alignment = Alignment.End),
-                colors = ButtonDefaults.buttonColors(contentColor = MaterialTheme.colorScheme.primary)
+                colors = ButtonDefaults.buttonColors(contentColor = MaterialTheme.colorScheme.background),
+                shape = CircleShape
             ) {
                 Text("Post", color = MaterialTheme.colorScheme.surface)
 
@@ -249,7 +292,7 @@ fun PostCreationPage(navController: NavHostController){
             onValueChange = { newText -> text.value = newText },
             label = { Text("Enter post's text") },
             modifier = Modifier
-                .padding(20.dp)
+                .padding(10.dp)
                 .fillMaxWidth()
                 .defaultMinSize(minHeight = 100.dp)
         )
