@@ -1,9 +1,11 @@
 package com.example.shebetar
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,13 +20,15 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -33,8 +37,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -42,100 +46,39 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.idapgroup.autosizetext.AutoSizeText
+import com.example.shebetar.HomeScreen.HomeScreen
+import com.example.shebetar.HomeScreen.createPost
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+
+
 
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val scaffoldState = rememberScaffoldState()
+            val scope = rememberCoroutineScope()
+            val activity = (LocalContext.current as? Activity)
             MaterialTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     val navController = rememberNavController()
-                    HomeScreen(navController = navController)
-
-
+                    HomeScreen(navController = navController, scope, scaffoldState)
                     Surface(color = MaterialTheme.colorScheme.background) {
                         Scaffold(
+                            scaffoldState = scaffoldState,
+                            drawerContent={
+                                Text("Profile", fontSize = 28.sp, modifier = Modifier.clickable {})
+                                Text("Settings", fontSize = 28.sp, modifier = Modifier.clickable {  })
+                                Text("Exit", fontSize = 28.sp, modifier = Modifier.clickable { activity?.finish() })
+                            },
                             bottomBar = {
                                 BottomNavigationBar(navController = navController)
                             }, content = { padding ->
-                                NavHostContainer(navController = navController, padding = padding)
+                                NavHostContainer(navController = navController, padding = padding, scope, scaffoldState)
                             }
                         )
                     }
-                }
-            }
-        }
-    }
-}
-
-data class Post(val id: Int, val content: String)
-var posts = listOf(
-    Post(1, "Content of Post 1"),
-)
-
-@Composable
-fun HomeScreen(navController: NavHostController) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(10.dp)
-    ) {
-        items(posts) { post ->
-            PostItem(post)
-        }
-    }
-    Box (
-        modifier = Modifier.fillMaxSize()
-    ){
-        FloatingActionButton(
-            modifier = Modifier
-                .align(alignment = Alignment.BottomEnd)
-                .padding(all = 16.dp),
-            onClick = {
-            navController.navigate("postCreation")
-        }) {
-            Icon(Icons.Filled.Add, contentDescription = "Create post", tint = MaterialTheme.colorScheme.surface)
-        }
-    }
-}
-
-@Composable
-fun PostItem(post: Post) {
-    var like by remember { mutableStateOf(Icons.Default.FavoriteBorder)}
-    var liked = false
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 5.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                text = post.content,
-                fontSize = 18.sp,
-                style = TextStyle(fontSize = 14.sp)
-            )
-            Row (
-                modifier = Modifier.fillMaxSize()
-            ){
-                IconButton(onClick = {
-                    if (!liked) {
-                        like = Icons.Default.Favorite
-                        liked = true
-                    }
-                    else{
-                        like = Icons.Default.FavoriteBorder
-                        liked = false
-                }}) {
-                    Icon(imageVector = like, contentDescription = "Like")
-                }
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "Share")
-                }
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Default.Face, contentDescription = "Comments")
                 }
             }
         }
@@ -162,7 +105,7 @@ fun SearchScreen() {
 }
 
 @Composable
-fun ProfileScreen() {
+fun NotificationScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -171,18 +114,18 @@ fun ProfileScreen() {
         verticalArrangement = Arrangement.Center
     ) {
         Icon(
-            imageVector = Icons.Default.Person,
-            contentDescription = "Profile",
+            imageVector = Icons.Default.Notifications,
+            contentDescription = "Notification",
             tint = Color(0xFF0F9D58)
         )
-        Text(text = "Profile", color = Color.Black)
+        Text(text = "Notifications", color = Color.Black)
     }
 }
 
 data class BottomNavItem(
     val label: String,
-    val icon: ImageVector,
-    val route:String,
+    val icon:  ImageVector,
+    val route: String,
 )
 
 object Constants {
@@ -198,9 +141,9 @@ object Constants {
             route = "search"
         ),
         BottomNavItem(
-            label = "Profile",
-            icon = Icons.Filled.Person,
-            route = "profile"
+            label = "Notifications",
+            icon = Icons.Filled.Notifications,
+            route = "notifications"
         )
     )
 }
@@ -208,7 +151,9 @@ object Constants {
 @Composable
 fun NavHostContainer(
     navController: NavHostController,
-    padding: PaddingValues
+    padding: PaddingValues,
+    scope: CoroutineScope,
+    scaffoldState: ScaffoldState
 ) {
     NavHost(
         navController = navController,
@@ -216,13 +161,13 @@ fun NavHostContainer(
         modifier = Modifier.padding(paddingValues = padding),
         builder = {
             composable("home") {
-                HomeScreen(navController)
+                HomeScreen(navController, scope, scaffoldState)
             }
             composable("search") {
                 SearchScreen()
             }
-            composable("profile") {
-                ProfileScreen()
+            composable("notifications") {
+                NotificationScreen()
             }
             composable("postCreation"){
                 PostCreationPage(navController)
@@ -297,9 +242,4 @@ fun PostCreationPage(navController: NavHostController){
                 .defaultMinSize(minHeight = 100.dp)
         )
     }
-}
-
-fun createPost(text: String){
-    val post = Post(posts.last().id, text)
-    posts += post
 }
