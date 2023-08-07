@@ -47,6 +47,7 @@ android {
 }
 
 dependencies {
+    implementation ("org.postgresql:postgresql:42.2.10")
     implementation ("com.idapgroup:autosizetext-compose:0.1.0")
     implementation("androidx.navigation:navigation-compose:2.4.0-alpha07")
     implementation ("androidx.compose.material:material:1.4.2")
