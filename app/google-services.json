@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "224481305022",
+    "firebase_url": "https://shebetar-3d3b7-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "shebetar-3d3b7",
+    "storage_bucket": "shebetar-3d3b7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:224481305022:android:6c982154ac9b76e1a619ef",
+        "android_client_info": {
+          "package_name": "com.example.shebetar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "224481305022-bjikajf825nd9s9aiou11a8ipdk9muak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgaOXHR90bUFR8ZldCjWhjbjY6alpuugw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "224481305022-bjikajf825nd9s9aiou11a8ipdk9muak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
