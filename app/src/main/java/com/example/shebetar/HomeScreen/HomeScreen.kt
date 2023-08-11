@@ -24,7 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.shebetar.DataBase.open_connection
+import com.example.shebetar.DataBase.openConnection
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
@@ -62,11 +62,9 @@ fun HomeScreen(navController: NavHostController, scope: CoroutineScope, scaffold
                 .align(alignment = Alignment.BottomEnd)
                 .padding(all = 16.dp),
             onClick = {
-                val database = Firebase.database
-                val myRef = database.getReference("message")
+                openConnection()
 
-                myRef.setValue("Hello, World!")
-                println(myRef)
+
                 navController.navigate("postCreation")
             }) {
             Icon(

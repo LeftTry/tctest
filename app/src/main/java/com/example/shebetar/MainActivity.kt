@@ -17,7 +17,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.shebetar.BottomNavBar.BottomNavigationBar
-import com.example.shebetar.DataBase.open_connection
 import com.example.shebetar.HomeScreen.HomeScreen
 import com.example.shebetar.NavHostContainer.NavHostContainer
 
