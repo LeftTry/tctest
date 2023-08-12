@@ -57,7 +57,7 @@ fun PostCreationScreen(navController: NavHostController){
             colors = ButtonDefaults.buttonColors(contentColor = MaterialTheme.colorScheme.background),
             shape = CircleShape
         ) {
-            Text("Post", color = MaterialTheme.colorScheme.surface)
+            Text("com/example/shebetar/Post", color = MaterialTheme.colorScheme.surface)
 
         }
         TextField(
