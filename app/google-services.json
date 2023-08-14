@@ -1,34 +1,33 @@
 {
   "project_info": {
-    "project_number": "224481305022",
-    "firebase_url": "https://shebetar-3d3b7-default-rtdb.europe-west1.firebasedatabase.app",
-    "project_id": "shebetar-3d3b7",
-    "storage_bucket": "shebetar-3d3b7.appspot.com"
+    "project_number": "637628322380",
+    "project_id": "shebetar-fdd15",
+    "storage_bucket": "shebetar-fdd15.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:224481305022:android:6c982154ac9b76e1a619ef",
+        "mobilesdk_app_id": "1:637628322380:android:4a45a9b8a4d2adafd8dae9",
         "android_client_info": {
           "package_name": "com.example.shebetar"
         }
       },
       "oauth_client": [
         {
-          "client_id": "224481305022-bjikajf825nd9s9aiou11a8ipdk9muak.apps.googleusercontent.com",
+          "client_id": "637628322380-a0h8in18299phm1v7jfg0qunon2dmfld.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDgaOXHR90bUFR8ZldCjWhjbjY6alpuugw"
+          "current_key": "AIzaSyByMzjnc4gUcnjsptQo6csQ8cbP8pNah1s"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "224481305022-bjikajf825nd9s9aiou11a8ipdk9muak.apps.googleusercontent.com",
+              "client_id": "637628322380-a0h8in18299phm1v7jfg0qunon2dmfld.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

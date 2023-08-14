@@ -7,6 +7,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 // Initialize Firebase Realtime Database in your Application class
 val database: FirebaseDatabase = FirebaseDatabase.getInstance()
@@ -18,7 +20,21 @@ val rootRef = database.reference
 val usersRef = rootRef.child("users")
 @SuppressLint("RestrictedApi")
 fun openConnection(){
+    val db = Firebase.firestore
+    // Create a new user with a first and last name
 
+    val user = User()
+
+// Add a new document with a generated ID
+    db.collection("users").document(user.id.toString())
+        .set(user.toMap())
+        .addOnSuccessListener { documentReference ->
+            Log.d("TAG", "DocumentSnapshot added with ID: ")
+        }
+        .addOnFailureListener { e ->
+            Log.w("TAG", "Error adding document", e)
+        }
+    /*
     // Listen for changes to the "users" child
     usersRef.addValueEventListener(object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -36,11 +52,12 @@ fun openConnection(){
             // Handle database errors
         }
     })
+     */
 }
 
 // Write data to the database
 fun writeData(user: User){
-    usersRef
+    usersRef.orderByKey()
     val userRef = database.getReference("User" + user.id)
     userRef.setValue(user)
 }

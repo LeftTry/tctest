@@ -4,6 +4,7 @@ import android.graphics.Picture
 import com.example.shebetar.Comment.Comment
 import com.example.shebetar.Post.Post
 import java.util.Date
+import java.util.HashMap
 
 // User class
 data class User(
@@ -46,4 +47,26 @@ data class User(
         emptyList(),
         emptyList()
     )
+    fun toMap(): HashMap<String, Any> {
+        val map = HashMap<String, Any>()
+        map["id"] = id
+        map["firstName"] = firstName
+        map["lastName"] = lastName
+        map["nickname"] = nickname
+        map["email"] = email
+        map["phone"] = phone
+        map["dateOfBirth"] = dateOfBirth
+        map["dateOfJoin"] = dateOfJoin
+        map["profilePicture"] = profilePicture
+        map["backgroundPicture"] = backgroundPicture
+        map["followersQuantity"] = followersQuantity
+        map["followers"] = followers
+        map["followingQuantity"] = followingQuantity
+        map["following"] = following
+        map["posts"] = posts
+        map["likedPosts"] = likedPosts
+        map["repostedPosts"] = repostedPosts
+        map["comments"] = comments
+        return map
+    }
 }
