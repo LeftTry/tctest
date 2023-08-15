@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import com.example.shebetar.HomeScreen.HomeScreen
 import com.example.shebetar.NotificationsScreen.NotificationsScreen
 import com.example.shebetar.PostCreationScreen.PostCreationScreen
+import com.example.shebetar.ProfileScreen.RegisterComponent
 import com.example.shebetar.SearchScreen.SearchScreen
 import kotlinx.coroutines.CoroutineScope
 
@@ -37,6 +38,9 @@ fun NavHostContainer(
             }
             composable("postCreation"){
                 PostCreationScreen(navController)
+            }
+            composable("register"){
+                RegisterComponent()
             }
         })
 
