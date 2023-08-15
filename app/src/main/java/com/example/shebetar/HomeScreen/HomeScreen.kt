@@ -24,11 +24,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.shebetar.DataBase.openConnection
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.example.shebetar.DataBase.addUser
+import com.example.shebetar.User.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun HomeScreen(navController: NavHostController, scope: CoroutineScope, scaffoldState: ScaffoldState) {
@@ -62,7 +62,8 @@ fun HomeScreen(navController: NavHostController, scope: CoroutineScope, scaffold
                 .align(alignment = Alignment.BottomEnd)
                 .padding(all = 16.dp),
             onClick = {
-                openConnection()
+                val user = User()
+                runBlocking{launch{ addUser(user) }}
 
 
                 navController.navigate("postCreation")

@@ -8,7 +8,7 @@ import java.util.HashMap
 
 // User class
 data class User(
-    val id: Int,
+    var id: Int,
     val firstName: String,
     val lastName: String,
     val nickname: String,
