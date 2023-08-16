@@ -1,7 +1,7 @@
-package com.example.shebetar.Comment
+package com.example.shebetar.Classes.Comment
 
 import android.view.ViewParent
-import com.example.shebetar.User.User
+import com.example.shebetar.Classes.User.User
 
 data class Comment(
     val author: User,

@@ -1,14 +1,11 @@
-package com.example.shebetar.ProfileScreen
+package com.example.shebetar.RegisterLoginScreen
 
 import android.app.DatePickerDialog
-import android.view.ContextThemeWrapper
-import android.widget.CalendarView
 import android.widget.DatePicker
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -22,9 +19,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
-import com.example.shebetar.R
-import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 
@@ -87,27 +81,4 @@ fun RegisterComponent(){
     }
 }
 
-@Composable
-fun CustomCalendarView(onDateSelected: (LocalDate) -> Unit) {
-    // Adds view to Compose
-    AndroidView(
-        modifier = Modifier.wrapContentSize(),
-        factory = { context ->
-            CalendarView(ContextThemeWrapper(context, R.style.CalenderViewCustom))
-        },
-        update = { view ->
-                view.minDate = 0
-                view.maxDate = 10000000000000000
 
-                view.setOnDateChangeListener { _, year, month, dayOfMonth ->
-                    onDateSelected(
-                        LocalDate
-                            .now()
-                            .withMonth(month + 1)
-                            .withYear(year)
-                            .withDayOfMonth(dayOfMonth)
-                    )
-                }
-        }
-    )
-}

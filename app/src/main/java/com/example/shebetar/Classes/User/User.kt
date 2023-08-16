@@ -1,8 +1,8 @@
-package com.example.shebetar.User
+package com.example.shebetar.Classes.User
 
 import android.graphics.Picture
-import com.example.shebetar.Comment.Comment
-import com.example.shebetar.Post.Post
+import com.example.shebetar.Classes.Comment.Comment
+import com.example.shebetar.Classes.Post.Post
 import java.util.Date
 import java.util.HashMap
 
@@ -14,6 +14,7 @@ data class User(
     val nickname: String,
     val email: String,
     val phone: String,
+    val password: String,
     val dateOfBirth: Date,
     val dateOfJoin: Date,
     val profilePicture: Picture,
@@ -29,6 +30,7 @@ data class User(
 ){
     constructor() : this(
         0,
+        "",
         "",
         "",
         "",
@@ -55,6 +57,7 @@ data class User(
         map["nickname"] = nickname
         map["email"] = email
         map["phone"] = phone
+        map["password"] = password
         map["dateOfBirth"] = dateOfBirth
         map["dateOfJoin"] = dateOfJoin
         map["profilePicture"] = profilePicture

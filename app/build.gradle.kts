@@ -54,6 +54,7 @@ android {
 
 dependencies {
     implementation ("org.jetbrains.kotlin:kotlin-reflect")
+    implementation ("com.google.firebase:firebase-auth-ktx:21.0.1")
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
     implementation("com.google.firebase:firebase-database-ktx")

@@ -1,7 +1,7 @@
-package com.example.shebetar.Post
+package com.example.shebetar.Classes.Post
 
-import com.example.shebetar.Comment.Comment
-import com.example.shebetar.User.User
+import com.example.shebetar.Classes.Comment.Comment
+import com.example.shebetar.Classes.User.User
 import java.util.Date
 
 data class Post(
