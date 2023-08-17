@@ -62,8 +62,8 @@ class MainActivity : ComponentActivity() {
                                                         BottomNavigationBar(navController = navController)
                                                 }, content = { padding ->
                                                         NavHostContainer(
-                                                        navController = navController,
-                                                        padding = padding,
+                                                        navController   = navController,
+                                                        padding         = padding,
                                                         scope,
                                                         scaffoldState
                                                         )

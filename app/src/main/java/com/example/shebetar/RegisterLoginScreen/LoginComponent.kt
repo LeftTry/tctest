@@ -14,11 +14,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.shebetar.TopNavBar.TopNavBar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 @Composable
 fun LoginComponent(){
+    TopNavBar()
     // State variables for email and password
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
