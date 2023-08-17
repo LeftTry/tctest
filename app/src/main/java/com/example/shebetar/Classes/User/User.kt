@@ -15,7 +15,7 @@ data class User(
     val email: String,
     val phone: String,
     val password: String,
-    val dateOfBirth: Date,
+    val dateOfBirth: Date?,
     val dateOfJoin: Date,
     val profilePicture: Picture,
     val backgroundPicture: Picture,
@@ -49,6 +49,28 @@ data class User(
         emptyList(),
         emptyList()
     )
+    constructor(firstName: String, lastName: String, nickname: String, email: String, phone: String, password: String, dateOfBirth: Date?): this(
+        0,
+        firstName,
+        lastName,
+        nickname,
+        email,
+        phone,
+        password,
+        dateOfBirth,
+        Date(),
+        Picture(),
+        Picture(),
+        0,
+        emptyList(),
+        0,
+        emptyList(),
+        emptyList(),
+        emptyList(),
+        emptyList(),
+        emptyList()
+
+    )
     fun toMap(): HashMap<String, Any> {
         val map = HashMap<String, Any>()
         map["id"] = id
@@ -58,7 +80,7 @@ data class User(
         map["email"] = email
         map["phone"] = phone
         map["password"] = password
-        map["dateOfBirth"] = dateOfBirth
+        map["dateOfBirth"] = dateOfBirth ?: ""
         map["dateOfJoin"] = dateOfJoin
         map["profilePicture"] = profilePicture
         map["backgroundPicture"] = backgroundPicture

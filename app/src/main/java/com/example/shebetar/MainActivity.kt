@@ -18,13 +18,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.shebetar.BottomNavBar.BottomNavigationBar
-import com.example.shebetar.DataBase.addUser
 import com.example.shebetar.DataBase.isDeviceLogined
 import com.example.shebetar.HomeScreen.HomeScreen
 import com.example.shebetar.NavHostContainer.NavHostContainer
-import com.example.shebetar.RegisterLoginScreen.LoginComponent
 import com.example.shebetar.RegisterLoginScreen.RegisterComponent
-import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -72,7 +69,7 @@ class MainActivity : ComponentActivity() {
                                 }
                         }
                         else{
-                                RegisterComponent()
+                                RegisterComponent(navController)
                         }
                 }
             }
