@@ -1,6 +1,5 @@
 package com.example.shebetar.RegisterLoginScreen
 
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.util.Log
 import android.widget.DatePicker
@@ -28,11 +27,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.shebetar.Classes.User.User
 import com.example.shebetar.DataBase.addUser
+import com.example.shebetar.DataBase.loginDevice
 import com.example.shebetar.TopNavBar.TopNavBar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 
@@ -75,8 +74,8 @@ fun RegisterComponent(navController: NavHostController){
     // initial values as current values (present year, month and day)
     val mDatePickerDialog = DatePickerDialog(
         mContext,
-        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-            mDate.value = "$mDayOfMonth.${mMonth+1}.$mYear"
+        { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+            mDate.value = "$dayOfMonth.${month+1}.$year"
         }, mYear, mMonth, mDay
     )
     Column(
@@ -140,6 +139,7 @@ fun RegisterComponent(navController: NavHostController){
                         addUser(User(firstName.value, lastName.value, username.value, email.value, phone.value, password.value, date))
                     }
                 }
+                loginDevice()
                 navController.navigate("home")
             }
             else{

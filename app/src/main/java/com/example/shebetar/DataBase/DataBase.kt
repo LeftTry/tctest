@@ -35,10 +35,10 @@ suspend fun addUser(user: User){
     db.collection("users").document(user.id.toString())
         .set(user.toMap())
         .addOnSuccessListener {
-            Log.d("TAG", "DocumentSnapshot added with ID: ")
+            Log.d("User", "User added with id: ${user.id}")
         }
         .addOnFailureListener { e ->
-            Log.w("TAG", "Error adding document", e)
+            Log.w("User", "Error adding user", e)
         }
 }
 
@@ -48,4 +48,15 @@ suspend fun isDeviceLogined(): DocumentSnapshot? {
 
     // Returning null or DocumentSnapshot
     return query.get().await()
+}
+
+fun loginDevice(){
+    val device: HashMap<String, String> = hashMapOf()
+
+    db.collection("LoginedDevices").document(android.os.Build.MODEL).set(device).addOnSuccessListener {
+        Log.d("Device", "Device logined")
+    }
+        .addOnFailureListener { e ->
+            Log.w("Device", "Error adding device", e)
+        }
 }

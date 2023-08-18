@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                         val navController = rememberNavController()
                         var isDeviceLogined: Any? = null
-                        runBlocking{launch{ isDeviceLogined = isDeviceLogined()?.get("doc") }}
+                        runBlocking{launch{ isDeviceLogined = isDeviceLogined() }}
                     Log.d("Tag", isDeviceLogined.toString())
                         if (isDeviceLogined != null) {
                                 HomeScreen(navController = navController, scope, scaffoldState)
@@ -50,7 +50,8 @@ class MainActivity : ComponentActivity() {
                                                 "Settings",
                                                     fontSize = 28.sp,
                                                     modifier = Modifier.clickable { })
-                                                Text(
+                                                Text(text = "LogOut", fontSize = 28.sp, modifier = Modifier.clickable { navController.navigate("registerLogin") })
+                                                    Text(
                                                 "Exit",
                                                     fontSize = 28.sp,
                                                     modifier = Modifier.clickable { activity?.finish() })

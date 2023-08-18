@@ -13,6 +13,7 @@ import com.example.shebetar.NotificationsScreen.NotificationsScreen
 import com.example.shebetar.PostCreationScreen.PostCreationScreen
 import com.example.shebetar.RegisterLoginScreen.LoginComponent
 import com.example.shebetar.RegisterLoginScreen.RegisterComponent
+import com.example.shebetar.RegisterLoginScreen.RegisterLoginScreen
 import com.example.shebetar.SearchScreen.SearchScreen
 import kotlinx.coroutines.CoroutineScope
 
@@ -45,6 +46,9 @@ fun NavHostContainer(
             }
             composable("login"){
                 LoginComponent()
+            }
+            composable("registerLogin"){
+                RegisterLoginScreen(navController = navController)
             }
         })
 
