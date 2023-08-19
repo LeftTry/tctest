@@ -8,7 +8,6 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
 
 @SuppressLint("StaticFieldLeak")
@@ -45,14 +44,16 @@ suspend fun addUser(user: User){
 
 suspend fun isDeviceLogined(): Boolean {
     // Defining a query to check if device has already logined
-    val query = db.collection("LoginedDevices").whereEqualTo("name", android.os.Build.MODEL).orderBy("name").limit(1)
+    val query = db.collection("LoginedDevices").whereEqualTo("name", android.os.Build.MODEL)
         .get()
         .addOnSuccessListener {
             Log.d("Device", "found")
         }
         .addOnFailureListener { Log.d("Device", "not found")}
         .await()
-    return query != null
+    Log.d("Query", query.isEmpty.toString())
+    // if query is empty -> device is not logined
+    return !query.isEmpty
 }
 
 fun loginDevice(){

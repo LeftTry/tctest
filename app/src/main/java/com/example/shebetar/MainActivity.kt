@@ -22,8 +22,7 @@ import com.example.shebetar.DataBase.isDeviceLogined
 import com.example.shebetar.DataBase.logoutDevice
 import com.example.shebetar.HomeScreen.HomeScreen
 import com.example.shebetar.NavHostContainer.NavHostContainer
-import com.example.shebetar.RegisterLoginScreen.RegisterComponent
-import kotlinx.coroutines.delay
+import com.example.shebetar.RegisterLoginScreen.RegisterLoginScreen
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -79,7 +78,7 @@ class MainActivity : ComponentActivity() {
                                 }
                         }
                         else{
-                                RegisterComponent(navController)
+                                RegisterLoginScreen(navController)
                         }
                 }
             }
