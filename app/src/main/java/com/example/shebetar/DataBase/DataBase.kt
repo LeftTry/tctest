@@ -8,6 +8,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
 
 @SuppressLint("StaticFieldLeak")
@@ -42,18 +43,34 @@ suspend fun addUser(user: User){
         }
 }
 
-suspend fun isDeviceLogined(): DocumentSnapshot? {
+suspend fun isDeviceLogined(): Boolean {
     // Defining a query to check if device has already logined
-    val query = db.collection("LoginedDevices").document(android.os.Build.MODEL)
-
-    // Returning null or DocumentSnapshot
-    return query.get().await()
+    val query = db.collection("LoginedDevices").whereEqualTo("name", android.os.Build.MODEL).orderBy("name").limit(1)
+        .get()
+        .addOnSuccessListener {
+            Log.d("Device", "found")
+        }
+        .addOnFailureListener { Log.d("Device", "not found")}
+        .await()
+    return query != null
 }
 
 fun loginDevice(){
-    val device: HashMap<String, String> = hashMapOf()
+    val device: HashMap<String, String> = hashMapOf(
+        "name" to android.os.Build.MODEL
+    )
 
+    // Adding new device to the database of logined devices
     db.collection("LoginedDevices").document(android.os.Build.MODEL).set(device).addOnSuccessListener {
+        Log.d("Device", "Device logined")
+    }
+        .addOnFailureListener { e ->
+            Log.w("Device", "Error adding device", e)
+        }
+}
+
+fun logoutDevice(){
+    db.collection("LoginedDevices").document(android.os.Build.MODEL).delete().addOnSuccessListener {
         Log.d("Device", "Device logined")
     }
         .addOnFailureListener { e ->

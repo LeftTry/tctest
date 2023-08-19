@@ -19,9 +19,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.shebetar.BottomNavBar.BottomNavigationBar
 import com.example.shebetar.DataBase.isDeviceLogined
+import com.example.shebetar.DataBase.logoutDevice
 import com.example.shebetar.HomeScreen.HomeScreen
 import com.example.shebetar.NavHostContainer.NavHostContainer
 import com.example.shebetar.RegisterLoginScreen.RegisterComponent
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -36,10 +38,11 @@ class MainActivity : ComponentActivity() {
             MaterialTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                         val navController = rememberNavController()
-                        var isDeviceLogined: Any? = null
-                        runBlocking{launch{ isDeviceLogined = isDeviceLogined() }}
-                    Log.d("Tag", isDeviceLogined.toString())
-                        if (isDeviceLogined != null) {
+                        var isDeviceLogined = false
+                    runBlocking{launch{
+                        isDeviceLogined = isDeviceLogined() }}
+                    Log.d("isDeviceLogined", isDeviceLogined.toString())
+                        if (isDeviceLogined) {
                                 HomeScreen(navController = navController, scope, scaffoldState)
                                 Surface(color = MaterialTheme.colorScheme.background) {
                                         Scaffold(
@@ -50,7 +53,13 @@ class MainActivity : ComponentActivity() {
                                                 "Settings",
                                                     fontSize = 28.sp,
                                                     modifier = Modifier.clickable { })
-                                                Text(text = "LogOut", fontSize = 28.sp, modifier = Modifier.clickable { navController.navigate("registerLogin") })
+                                                Text(
+                                                    text = "LogOut",
+                                                    fontSize = 28.sp,
+                                                    modifier = Modifier.clickable {
+                                                        logoutDevice()
+                                                        navController.navigate("registerLogin")
+                                                    })
                                                     Text(
                                                 "Exit",
                                                     fontSize = 28.sp,
