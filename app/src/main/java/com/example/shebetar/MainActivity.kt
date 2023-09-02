@@ -22,7 +22,6 @@ import com.example.shebetar.DataBase.isDeviceLogined
 import com.example.shebetar.DataBase.logoutDevice
 import com.example.shebetar.HomeScreen.HomeScreen
 import com.example.shebetar.NavHostContainer.NavHostContainer
-import com.example.shebetar.RegisterLoginScreen.RegisterLoginScreen
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -42,43 +41,79 @@ class MainActivity : ComponentActivity() {
                         isDeviceLogined = isDeviceLogined() }}
                     Log.d("isDeviceLogined", isDeviceLogined.toString())
                         if (isDeviceLogined) {
-                                HomeScreen(navController = navController, scope, scaffoldState)
-                                Surface(color = MaterialTheme.colorScheme.background) {
-                                        Scaffold(
-                                                scaffoldState = scaffoldState,
-                                                drawerContent = {
-                                                Text("Profile", fontSize = 28.sp, modifier = Modifier.clickable {})
-                                                Text(
-                                                "Settings",
-                                                    fontSize = 28.sp,
-                                                    modifier = Modifier.clickable { })
-                                                Text(
-                                                    text = "LogOut",
-                                                    fontSize = 28.sp,
-                                                    modifier = Modifier.clickable {
-                                                        logoutDevice()
-                                                        navController.navigate("registerLogin")
-                                                    })
-                                                    Text(
-                                                "Exit",
-                                                    fontSize = 28.sp,
-                                                    modifier = Modifier.clickable { activity?.finish() })
-                                                },
-                                                bottomBar = {
-                                                        BottomNavigationBar(navController = navController)
-                                                }, content = { padding ->
+                            HomeScreen(navController = navController, scope, scaffoldState)
+                            Surface(color = MaterialTheme.colorScheme.background) {
+                                Scaffold(
+                                    scaffoldState = scaffoldState,
+                                    drawerContent = {
+                                        Text("Profile", fontSize = 28.sp, modifier = Modifier.clickable {
+                                            navController.navigate("profile")
+                                        })
+                                        Text(
+                                            "Settings",
+                                            fontSize = 28.sp,
+                                            modifier = Modifier.clickable { })
+                                        Text(
+                                            text = "LogOut",
+                                            fontSize = 28.sp,
+                                            modifier = Modifier.clickable {
+                                                logoutDevice()
+                                                navController.navigate("registerLogin")
+                                            })
+                                        Text(
+                                            "Exit",
+                                            fontSize = 28.sp,
+                                            modifier = Modifier.clickable { activity?.finish() })
+                                                    },
+                                            bottomBar = {
+                                                BottomNavigationBar(navController = navController)
+                                                        }, content = { padding ->
                                                         NavHostContainer(
                                                         navController   = navController,
                                                         padding         = padding,
                                                         scope,
-                                                        scaffoldState
+                                                        scaffoldState,
+                                                            start = "home"
                                                         )
                                                     }
                                         )
                                 }
                         }
                         else{
-                                RegisterLoginScreen(navController)
+                            Surface(color = MaterialTheme.colorScheme.background) {
+                                Scaffold(
+                                    scaffoldState = scaffoldState,
+                                    drawerContent = {
+                                        Text("Profile", fontSize = 28.sp, modifier = Modifier.clickable {
+                                            navController.navigate("profile")
+                                        })
+                                        Text(
+                                            "Settings",
+                                            fontSize = 28.sp,
+                                            modifier = Modifier.clickable { })
+                                        Text(
+                                            text = "LogOut",
+                                            fontSize = 28.sp,
+                                            modifier = Modifier.clickable {
+                                                logoutDevice()
+                                                navController.navigate("registerLogin")
+                                            })
+                                        Text(
+                                            "Exit",
+                                            fontSize = 28.sp,
+                                            modifier = Modifier.clickable { activity?.finish() })
+                                    },
+                                    content = { padding ->
+                                        NavHostContainer(
+                                            navController   = navController,
+                                            padding         = padding,
+                                            scope,
+                                            scaffoldState,
+                                            start = "registerLogin"
+                                        )
+                                    }
+                                )
+                            }
                         }
                 }
             }

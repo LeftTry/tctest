@@ -1,32 +1,34 @@
 package com.example.shebetar.Classes.User
 
 import android.graphics.Picture
+import android.util.Log
 import com.example.shebetar.Classes.Comment.Comment
 import com.example.shebetar.Classes.Post.Post
+import com.google.firebase.firestore.DocumentSnapshot
 import java.util.Date
 import java.util.HashMap
 
 // User class
 data class User(
-    var id: Int,
-    val firstName: String,
-    val lastName: String,
-    val nickname: String,
-    val email: String,
-    val phone: String,
-    val password: String,
-    val dateOfBirth: Date?,
-    val dateOfJoin: Date,
-    val profilePicture: Picture,
-    val backgroundPicture: Picture,
-    val followersQuantity: Int,
-    val followers: List<User>,
-    val followingQuantity: Int,
-    val following: List<User>,
-    val posts: List<Post>,
-    val likedPosts: List<Post>,
-    val repostedPosts: List<Post>,
-    val comments: List<Comment>
+    var id: Long,
+    var firstName: String,
+    var lastName: String,
+    var nickname: String,
+    var email: String,
+    var phone: String,
+    var password: String,
+    var dateOfBirth: Date?,
+    var dateOfJoin: Date,
+    var profilePicture: Picture,
+    var backgroundPicture: Picture,
+    var followersQuantity: Long,
+    var followers: List<User>,
+    var followingQuantity: Long,
+    var following: List<User>,
+    var posts: List<Post>,
+    var likedPosts: List<Post>,
+    var repostedPosts: List<Post>,
+    var comments: List<Comment>
 ){
     constructor() : this(
         0,
@@ -93,5 +95,33 @@ data class User(
         map["repostedPosts"] = repostedPosts
         map["comments"] = comments
         return map
+    }
+
+    fun toUserFromQuery(query: DocumentSnapshot?){
+        if (query?.exists() == true) {
+            val data = query.data
+            id = data?.get("id") as Long
+            firstName = data["firstName"] as String
+            lastName = data["lastName"] as String
+            nickname = data["nickname"] as String
+            email = data["email"] as String
+            phone = data["phone"] as String
+            password = data["password"] as String
+            dateOfBirth = query.getTimestamp("dateOfBirth")?.toDate()
+            dateOfJoin = query.getTimestamp("dateOfJoin")?.toDate()!!
+            profilePicture = Picture()
+            backgroundPicture = Picture()
+            followersQuantity = data["followersQuantity"] as Long
+            followers = data["followers"] as List<User>
+            followingQuantity = data["followingQuantity"] as Long
+            following = data["following"] as List<User>
+            posts = data["posts"] as List<Post>
+            likedPosts = data["likedPosts"] as List<Post>
+            repostedPosts = data["repostedPosts"] as List<Post>
+            comments = data["comments"] as List<Comment>
+            Log.d("DeviceUserGetMethod", "found")
+        } else {
+            Log.d("DeviceUserGetMethod", "not found")
+        }
     }
 }

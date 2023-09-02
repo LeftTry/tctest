@@ -134,12 +134,14 @@ fun RegisterComponent(navController: NavHostController){
                 calendar.set(Calendar.MONTH, mMonth)
                 calendar.set(Calendar.DAY_OF_MONTH, mDay)
                 val date = calendar.time
+                var user = User()
                 runBlocking {
                     launch(Dispatchers.IO) {
-                        addUser(User(firstName.value, lastName.value, username.value, email.value, phone.value, password.value, date))
+                        user = User(firstName.value, lastName.value, username.value, email.value, phone.value, password.value, date)
+                        addUser(user)
                     }
                 }
-                loginDevice()
+                loginDevice(user)
                 navController.navigate("home")
             }
             else{

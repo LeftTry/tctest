@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import com.example.shebetar.HomeScreen.HomeScreen
 import com.example.shebetar.NotificationsScreen.NotificationsScreen
 import com.example.shebetar.PostCreationScreen.PostCreationScreen
+import com.example.shebetar.ProfileScreen.ProfileScreen
 import com.example.shebetar.RegisterLoginScreen.LoginComponent
 import com.example.shebetar.RegisterLoginScreen.RegisterComponent
 import com.example.shebetar.RegisterLoginScreen.RegisterLoginScreen
@@ -22,11 +23,12 @@ fun NavHostContainer(
     navController: NavHostController,
     padding: PaddingValues,
     scope: CoroutineScope,
-    scaffoldState: ScaffoldState
+    scaffoldState: ScaffoldState,
+    start: String
 ) {
     NavHost(
         navController = navController,
-        startDestination = "home",
+        startDestination = start,
         modifier = Modifier.padding(paddingValues = padding),
         builder = {
             composable("home") {
@@ -49,6 +51,9 @@ fun NavHostContainer(
             }
             composable("registerLogin"){
                 RegisterLoginScreen(navController = navController)
+            }
+            composable("profile"){
+                ProfileScreen()
             }
         })
 
