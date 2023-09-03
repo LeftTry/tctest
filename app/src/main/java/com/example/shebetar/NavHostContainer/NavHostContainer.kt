@@ -53,7 +53,7 @@ fun NavHostContainer(
                 RegisterLoginScreen(navController = navController)
             }
             composable("profile"){
-                ProfileScreen()
+                ProfileScreen(scope, scaffoldState)
             }
         })
 
