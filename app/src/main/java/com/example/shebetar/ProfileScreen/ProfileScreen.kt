@@ -20,10 +20,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.shebetar.Classes.User.User
 import com.example.shebetar.DataBase.getUser
+import com.example.shebetar.R
 import com.example.shebetar.TopNavBar.TopNavBar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -43,14 +46,14 @@ fun ProfileScreen(scope: CoroutineScope, scaffoldState: ScaffoldState){
             .fillMaxWidth()
             .height(20.dp)
             .background(color = androidx.compose.material3.MaterialTheme.colorScheme.surface)){
-            Image(painter = , contentDescription = "avatar",  modifier = Modifier
+            Image(painter = painterResource(id = R.drawable.basicAvatar), contentDescription = "avatar",  modifier = Modifier
                 .size(128.dp)
                 .clip(CircleShape))
-            Text(text = user.firstName, modifier = Modifier
-                .padding(10.dp)
+            Text(text = user.firstName, fontSize = 18.sp, modifier = Modifier
+                .padding(start = 100.dp, end = 15.dp)
                 .align(alignment = Alignment.CenterVertically))
-            Text(text = user.lastName, modifier = Modifier
-                .padding(10.dp)
+            Text(text = user.lastName, fontSize = 18.sp, modifier = Modifier
+                .padding(start = 100.dp, end = 15.dp)
                 .align(alignment = Alignment.CenterVertically))
         }
         Row(modifier = Modifier

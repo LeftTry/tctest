@@ -32,28 +32,35 @@ suspend fun addUser(user: User){
     val data = lastDocument?.data
 
     // Do something with the data
-    Log.d("DataBase","Last added document: $data")
+    Log.d("DataBaseAddUserMethod","Last added document: $data")
     user.id = data?.get("id").toString().toLong() + 1
     db.collection("users").document(user.id.toString())
         .set(user.toMap())
         .addOnSuccessListener {
-            Log.d("User", "User added with id: ${user.id}")
+            Log.d("DataBaseAddUserMethod", "User added with id: ${user.id}")
         }
         .addOnFailureListener { e ->
-            Log.w("User", "Error adding user", e)
+            Log.w("DataBaseAddUserMethod", "Error adding user", e)
         }
 }
-fun updateUser(user: User){
-
+suspend fun updateUser(user: User){
+    db.collection("users").document(user.id.toString()).update(user.toMap())
+        .addOnSuccessListener{
+            Log.d("DataBaseUpdateUserMethod", "success")
+        }
+        .addOnFailureListener{
+            Log.d("DataBaseUpdateUserMethod", "failure")
+        }
+        .await()
 }
 
 suspend fun getUser(): User {
     var query = db.collection("LoginedDevices").document(MODEL)
         .get()
         .addOnSuccessListener {
-            Log.d("DeviceUserGetMethod", "found")
+            Log.d("DataBaseUserGetMethod", "found")
         }
-        .addOnFailureListener { Log.d("DeviceUserGetMethod", "not found")}
+        .addOnFailureListener { Log.d("DataBaseUserGetMethod", "not found")}
         .await()
     Log.d("QueryGetUserMethod", query.toString())
     val id = query.get("userId")
@@ -61,13 +68,24 @@ suspend fun getUser(): User {
     query = db.collection("users").document(id.toString())
         .get()
         .addOnSuccessListener {
-            Log.d("DeviceUserGetMethod", "found")
+            Log.d("DataBaseUserGetMethod", "found")
         }
-        .addOnFailureListener { Log.d("DeviceUserGetMethod", "not found")}
+        .addOnFailureListener { Log.d("DataBaseUserGetMethod", "not found")}
         .await()
     val user = User()
     user.toUserFromQuery(query)
     return user
+}
+
+suspend fun deleteUser(user: User){
+    db.collection("users").document(user.id.toString()).delete()
+        .addOnSuccessListener {
+            Log.d("DataBaseDeleteUserMethod", "user deleted")
+        }
+        .addOnFailureListener{
+            Log.d("DataBaseDeleteUserMethod", "user is not deleted")
+        }
+        .await()
 }
 
 suspend fun isDeviceLogined(): Boolean {
@@ -75,9 +93,9 @@ suspend fun isDeviceLogined(): Boolean {
     val query = db.collection("LoginedDevices").whereEqualTo("name", MODEL)
         .get()
         .addOnSuccessListener {
-            Log.d("DeviceIsDeviceLoginedMethod", "found")
+            Log.d("DataBaseIsDeviceLoginedMethod", "found")
         }
-        .addOnFailureListener { Log.d("DeviceIsDeviceLoginedMethod", "not found")}
+        .addOnFailureListener { Log.d("DataBaseIsDeviceLoginedMethod", "not found")}
         .await()
     Log.d("Query", query.isEmpty.toString())
     // if query is empty -> device is not logined
@@ -92,18 +110,18 @@ fun loginDevice(user: User){
 
     // Adding new device to the database of logined devices
     db.collection("LoginedDevices").document(MODEL).set(device).addOnSuccessListener {
-        Log.d("DeviceLoginDeviceMethod", "Device logined")
+        Log.d("DataBaseLoginDeviceMethod", "Device logined")
     }
         .addOnFailureListener { e ->
-            Log.w("DeviceLoginDeviceMethod", "Error adding device", e)
+            Log.w("DataBaseLoginDeviceMethod", "Error adding device", e)
         }
 }
 
 fun logoutDevice(){
     db.collection("LoginedDevices").document(MODEL).delete().addOnSuccessListener {
-        Log.d("DeviceLogoutDeviceMethod", "Device logined")
+        Log.d("DataBaseLogoutDeviceMethod", "Device logined")
     }
         .addOnFailureListener { e ->
-            Log.w("DeviceLogoutDeviceMethod", "Error adding device", e)
+            Log.w("DataBaseLogoutDeviceMethod", "Error adding device", e)
         }
 }

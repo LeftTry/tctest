@@ -18,12 +18,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.shebetar.Classes.Comment.Comment
+import com.example.shebetar.Classes.Post.Post
 import com.example.shebetar.Classes.User.User
 import com.example.shebetar.DataBase.addUser
+import com.example.shebetar.DataBase.getUser
 import com.example.shebetar.TopNavBar.TopNavBar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.util.Date
 
 @Composable
 fun HomeScreen(navController: NavHostController, scope: CoroutineScope, scaffoldState: ScaffoldState) {
@@ -62,6 +66,8 @@ fun HomeScreen(navController: NavHostController, scope: CoroutineScope, scaffold
 }
 
 fun createPost(text: String){
-    val post = Post(posts.last().id, text, 0, 0, 0, 0)
+    var user = User()
+    runBlocking { launch { user = getUser() } }
+    val post = Post(posts.last().id, user, text, Date(), 0, emptyList<User>(), 0, emptyList<User>(), 0, emptyList<Comment>(), 0)
     posts += post
 }

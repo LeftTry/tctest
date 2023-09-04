@@ -25,16 +25,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.shebetar.Classes.Comment.Comment
+import com.example.shebetar.Classes.Post.Post
+import com.example.shebetar.Classes.User.User
+import java.util.Date
 
-data class Post(val id: Int, val content: String, var likes: Int, val reposts: Int, val comments: Int, val views: Int)
 var posts = listOf(
-    Post(1, "Content of Post 1", 0, 0, 0, 0)
+    Post(0, User(), "Content of Post 0", Date(), 0, emptyList<User>(), 0, emptyList<User>(), 0, emptyList<Comment>(), 0)
 )
 
 @Composable
 fun PostItem(post: Post) {
     var like by remember { mutableStateOf(Icons.Default.FavoriteBorder) }
-    var likes by remember { mutableStateOf(post.likes) }
+    var likes by remember { mutableStateOf(post.likesQuantity) }
     var liked = false
     Card(
         modifier = Modifier
@@ -45,7 +48,7 @@ fun PostItem(post: Post) {
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = post.content,
+                text = post.text,
                 fontSize = 18.sp,
                 style = TextStyle(fontSize = 14.sp)
             )
@@ -75,7 +78,7 @@ fun PostItem(post: Post) {
                     Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "Reposts")
                 }
                 Text(modifier = Modifier.align(alignment = Alignment.CenterVertically),
-                    text = post.reposts.toString())
+                    text = post.repostsQuantity.toString())
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(imageVector = Icons.Default.Face, contentDescription = "Comments")
                 }
@@ -86,7 +89,7 @@ fun PostItem(post: Post) {
                     .padding(10.dp),
                     imageVector = Icons.Default.Info, contentDescription = "Views")
                 Text(modifier = Modifier.align(alignment = Alignment.CenterVertically),
-                    text = post.views.toString())
+                    text = post.viewsQuantity.toString())
             }
         }
     }
