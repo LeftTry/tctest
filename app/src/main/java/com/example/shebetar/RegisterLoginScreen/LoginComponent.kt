@@ -56,17 +56,5 @@ fun LoginComponent(){
 }
 
 private fun performLogin(email: String, password: String) {
-    val auth = Firebase.auth
-    auth.signInWithEmailAndPassword(email, password)
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                // Login successful
-                val user = auth.currentUser
-                // Do something with the user
-            } else {
-                // Login failed
-                val exception = task.exception
-                // Handle the exception
-            }
-        }
+    
 }
