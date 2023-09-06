@@ -4,6 +4,7 @@ import android.graphics.Picture
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
@@ -44,23 +46,33 @@ fun ProfileScreen(scope: CoroutineScope, scaffoldState: ScaffoldState){
         TopNavBar(scope = scope, scaffoldState = scaffoldState)
         Row (modifier = Modifier
             .fillMaxWidth()
-            .height(20.dp)
+            .height(80.dp)
             .background(color = androidx.compose.material3.MaterialTheme.colorScheme.surface)){
-            Image(painter = painterResource(id = R.drawable.basicAvatar), contentDescription = "avatar",  modifier = Modifier
-                .size(128.dp)
-                .clip(CircleShape))
-            Text(text = user.firstName, fontSize = 18.sp, modifier = Modifier
-                .padding(start = 100.dp, end = 15.dp)
-                .align(alignment = Alignment.CenterVertically))
+            Box(modifier = Modifier.padding(top = 5.dp)) {
+                Image(
+                    painter = painterResource(id = R.drawable.basicavatar),
+                    contentScale = ContentScale.Crop,
+                    contentDescription = "avatar",
+                    modifier = Modifier
+                        .size(64.dp)
+                        .clip(CircleShape)
+                )
+            }
+            Column(modifier = Modifier.padding(start = 50.dp, end = 15.dp)
+            .align(alignment = Alignment.CenterVertically)) {
+                Text(text = user.firstName, fontSize = 18.sp, modifier = Modifier.padding(top = 20.dp))
+                Text(text = "@${user.nickname}")
+            }
+
             Text(text = user.lastName, fontSize = 18.sp, modifier = Modifier
-                .padding(start = 100.dp, end = 15.dp)
+                .padding(end = 15.dp)
                 .align(alignment = Alignment.CenterVertically))
         }
         Row(modifier = Modifier
             .fillMaxWidth()
-            .height(30.dp)
+            .height(20.dp)
             .background(color = androidx.compose.material3.MaterialTheme.colorScheme.surface)){
-            Text(text = "@${user.nickname}")
+
         }
         Divider(color = androidx.compose.material3.MaterialTheme.colorScheme.inverseSurface)
     }
