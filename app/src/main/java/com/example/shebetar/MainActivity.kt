@@ -48,6 +48,7 @@ class MainActivity : ComponentActivity() {
                                     drawerContent = {
                                         Text("Profile", fontSize = 28.sp, modifier = Modifier.clickable {
                                             navController.navigate("profile")
+                                            scope.launch{ scaffoldState.drawerState.close() }
                                         })
                                         Text(
                                             "Settings",
@@ -59,6 +60,7 @@ class MainActivity : ComponentActivity() {
                                             modifier = Modifier.clickable {
                                                 logoutDevice()
                                                 navController.navigate("registerLogin")
+                                                scope.launch{ scaffoldState.drawerState.close() }
                                             })
                                         Text(
                                             "Exit",
