@@ -59,8 +59,9 @@ class MainActivity : ComponentActivity() {
                                             fontSize = 28.sp,
                                             modifier = Modifier.clickable {
                                                 logoutDevice()
-                                                navController.navigate("registerLogin")
-                                                scope.launch{ scaffoldState.drawerState.close() }
+                                                val intent = intent
+                                                finish()
+                                                startActivity(intent)
                                             })
                                         Text(
                                             "Exit",
