@@ -19,8 +19,6 @@ import com.example.shebetar.Classes.User.User
 import com.example.shebetar.DataBase.getUserByEmailOrPhone
 import com.example.shebetar.DataBase.loginDevice
 import com.example.shebetar.TopNavBar.TopNavBar
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 

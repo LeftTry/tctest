@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -92,16 +93,21 @@ fun RegisterComponent(navController: NavHostController){
         TextField(value = lastName.value,           onValueChange = {newLastName -> lastName.value = newLastName},                          label = { Text(text = "Last name")},          modifier = Modifier
             .align(Alignment.CenterHorizontally)
             .padding(5.dp))
-        TextField(value = email.value,              onValueChange = {newEmail -> email.value = newEmail},                                   label = { Text(text = "Email")},              modifier = Modifier
+        TextField(value = email.value,
+            onValueChange = {newEmail -> email.value = newEmail},                                   label = { Text(text = "Email")},              modifier = Modifier
             .align(Alignment.CenterHorizontally)
             .padding(5.dp))
         TextField(value = phone.value,              onValueChange = {newPhone -> phone.value = newPhone},                                   label = { Text(text = "Phone")},              modifier = Modifier
             .align(Alignment.CenterHorizontally)
             .padding(5.dp))
-        TextField(value = password.value,           onValueChange = {newPassword -> password.value = newPassword},                          label = { Text(text = "Password")},           modifier = Modifier
+        TextField(value = password.value,
+            visualTransformation = PasswordVisualTransformation(),
+            onValueChange = {newPassword -> password.value = newPassword},                          label = { Text(text = "Password")},           modifier = Modifier
             .align(Alignment.CenterHorizontally)
             .padding(5.dp))
-        TextField(value = repeatedPassword.value,   onValueChange = {newRepeatedPassword -> repeatedPassword.value = newRepeatedPassword},  label = { Text(text = "Repeat password")},    modifier = Modifier
+        TextField(value = repeatedPassword.value,
+            visualTransformation = PasswordVisualTransformation(),
+            onValueChange = {newRepeatedPassword -> repeatedPassword.value = newRepeatedPassword},  label = { Text(text = "Repeat password")},    modifier = Modifier
             .align(Alignment.CenterHorizontally)
             .padding(5.dp))
         // Creating a button that on
