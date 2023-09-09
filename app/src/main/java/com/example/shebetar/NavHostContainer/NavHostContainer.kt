@@ -47,7 +47,7 @@ fun NavHostContainer(
                 RegisterComponent(navController)
             }
             composable("login"){
-                LoginComponent()
+                LoginComponent(navController)
             }
             composable("registerLogin"){
                 RegisterLoginScreen(navController = navController)

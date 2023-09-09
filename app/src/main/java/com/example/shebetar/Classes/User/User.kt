@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.shebetar.Classes.Comment.Comment
 import com.example.shebetar.Classes.Post.Post
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
 import java.util.Date
 import java.util.HashMap
 
@@ -97,9 +98,9 @@ data class User(
         return map
     }
 
-    fun toUserFromQuery(query: DocumentSnapshot?){
-        if (query?.exists() == true) {
-            val data = query.data
+    fun toUserFromDocumentSnapshot(documentSnapshot: DocumentSnapshot?){
+        if (documentSnapshot?.exists() == true) {
+            val data = documentSnapshot.data
             id = data?.get("id") as Long
             firstName = data["firstName"] as String
             lastName = data["lastName"] as String
@@ -107,8 +108,8 @@ data class User(
             email = data["email"] as String
             phone = data["phone"] as String
             password = data["password"] as String
-            dateOfBirth = query.getTimestamp("dateOfBirth")?.toDate()
-            dateOfJoin = query.getTimestamp("dateOfJoin")?.toDate()!!
+            dateOfBirth = documentSnapshot.getTimestamp("dateOfBirth")?.toDate()
+            dateOfJoin = documentSnapshot.getTimestamp("dateOfJoin")?.toDate()!!
             profilePicture = Picture()
             backgroundPicture = Picture()
             followersQuantity = data["followersQuantity"] as Long
@@ -123,5 +124,29 @@ data class User(
         } else {
             Log.d("DeviceUserGetMethod", "not found")
         }
+    }
+
+    fun toUserFromQuerySnapshot(querySnapshot: QuerySnapshot?){
+        val data = querySnapshot?.documents?.get(0)?.data
+        id = data?.get("id") as Long
+        firstName = data["firstName"] as String
+        lastName = data["lastName"] as String
+        nickname = data["nickname"] as String
+        email = data["email"] as String
+        phone = data["phone"] as String
+        password = data["password"] as String
+        dateOfBirth = Date()
+        dateOfJoin = Date()
+        profilePicture = Picture()
+        backgroundPicture = Picture()
+        followersQuantity = data["followersQuantity"] as Long
+        followers = data["followers"] as List<User>
+        followingQuantity = data["followingQuantity"] as Long
+        following = data["following"] as List<User>
+        posts = data["posts"] as List<Post>
+        likedPosts = data["likedPosts"] as List<Post>
+        repostedPosts = data["repostedPosts"] as List<Post>
+        comments = data["comments"] as List<Comment>
+        Log.d("DeviceUserGetMethod", "found")
     }
 }

@@ -14,15 +14,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import com.example.shebetar.Classes.User.User
+import com.example.shebetar.DataBase.getUserByEmailOrPhone
+import com.example.shebetar.DataBase.loginDevice
 import com.example.shebetar.TopNavBar.TopNavBar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @Composable
-fun LoginComponent(){
+fun LoginComponent(navController: NavHostController){
     TopNavBar()
     // State variables for email and password
-    val emailState = remember { mutableStateOf("") }
+    val emailPhoneState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
 
     Column(
@@ -32,9 +38,9 @@ fun LoginComponent(){
     ) {
         // Email input field
         TextField(
-            value = emailState.value,
-            onValueChange = { emailState.value = it },
-            label = { Text("Email") }
+            value = emailPhoneState.value,
+            onValueChange = { emailPhoneState.value = it },
+            label = { Text("Email or Phone") }
         )
 
         // Password input field
@@ -47,7 +53,9 @@ fun LoginComponent(){
 
         // Login button
         Button(
-            onClick = { performLogin(emailState.value, passwordState.value) },
+            onClick = { val user = performLogin(emailPhoneState.value, passwordState.value)
+                        loginDevice(user)
+                        navController.navigate("home")},
             modifier = Modifier.padding(top = 16.dp)
         ) {
             Text("Log In")
@@ -55,6 +63,8 @@ fun LoginComponent(){
     }
 }
 
-private fun performLogin(email: String, password: String) {
-    
+private fun performLogin(emailPhone: String, password: String): User {
+    var user = User()
+    runBlocking { launch{ user = getUserByEmailOrPhone(emailPhone, password) } }
+    return user
 }

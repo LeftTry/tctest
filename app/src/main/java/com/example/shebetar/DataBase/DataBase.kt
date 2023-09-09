@@ -54,7 +54,7 @@ suspend fun updateUser(user: User){
         .await()
 }
 
-suspend fun getUser(): User {
+suspend fun getUserByDevice(): User {
     var query = db.collection("LoginedDevices").document(MODEL)
         .get()
         .addOnSuccessListener {
@@ -73,10 +73,32 @@ suspend fun getUser(): User {
         .addOnFailureListener { Log.d("DataBaseUserGetMethod", "not found")}
         .await()
     val user = User()
-    user.toUserFromQuery(query)
+    user.toUserFromDocumentSnapshot(query)
     return user
 }
 
+suspend fun getUserByEmailOrPhone(emailPhone: String, password: String): User{
+    var query: QuerySnapshot? = null
+        Log.d("DataBaseGetUserByEmailOrPhoneMethod", "email found")
+        query = db.collection("users").whereEqualTo("email", emailPhone)
+            .whereEqualTo("password", password)
+            .get()
+            .addOnSuccessListener { Log.d("DataBaseGetUserByEmailOrPhoneMethod", "User found") }
+            .addOnFailureListener { Log.d("DataBaseGetUserByEmailOrPhoneMethod", "User not found") }
+            .await()
+    if(emailPhone.contains("0-9+".toRegex())) {
+        query = db.collection("users").whereEqualTo("phone", emailPhone)
+            .whereEqualTo("password", password)
+            .get()
+            .addOnSuccessListener { Log.d("DataBaseGetUserByEmailOrPhoneMethod", "User found") }
+            .addOnFailureListener { Log.d("DataBaseGetUserByEmailOrPhoneMethod", "User not found") }
+            .await()
+    }
+    val user = User()
+    user.toUserFromQuerySnapshot(query)
+    Log.d("DataBaseGetUserByEmailOrPhoneMethod", user.toString())
+    return user
+}
 suspend fun deleteUser(user: User){
     db.collection("users").document(user.id.toString()).delete()
         .addOnSuccessListener {

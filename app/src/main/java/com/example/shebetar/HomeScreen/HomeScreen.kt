@@ -22,7 +22,7 @@ import com.example.shebetar.Classes.Comment.Comment
 import com.example.shebetar.Classes.Post.Post
 import com.example.shebetar.Classes.User.User
 import com.example.shebetar.DataBase.addUser
-import com.example.shebetar.DataBase.getUser
+import com.example.shebetar.DataBase.getUserByDevice
 import com.example.shebetar.TopNavBar.TopNavBar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -67,7 +67,7 @@ fun HomeScreen(navController: NavHostController, scope: CoroutineScope, scaffold
 
 fun createPost(text: String){
     var user = User()
-    runBlocking { launch { user = getUser() } }
+    runBlocking { launch { user = getUserByDevice() } }
     val post = Post(posts.last().id, user, text, Date(), 0, emptyList<User>(), 0, emptyList<User>(), 0, emptyList<Comment>(), 0)
     posts += post
 }
