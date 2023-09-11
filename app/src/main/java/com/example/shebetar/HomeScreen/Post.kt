@@ -48,6 +48,11 @@ fun PostItem(post: Post) {
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
+                text = "@ ${post.author.nickname}",
+                fontSize = 18.sp,
+                style = TextStyle(fontSize = 14.sp)
+            )
+            Text(
                 text = post.text,
                 fontSize = 18.sp,
                 style = TextStyle(fontSize = 14.sp)

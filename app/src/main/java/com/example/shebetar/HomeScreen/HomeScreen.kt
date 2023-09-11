@@ -1,5 +1,6 @@
 package com.example.shebetar.HomeScreen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,7 +22,6 @@ import androidx.navigation.NavHostController
 import com.example.shebetar.Classes.Comment.Comment
 import com.example.shebetar.Classes.Post.Post
 import com.example.shebetar.Classes.User.User
-import com.example.shebetar.DataBase.addUser
 import com.example.shebetar.DataBase.getUserByDevice
 import com.example.shebetar.TopNavBar.TopNavBar
 import kotlinx.coroutines.CoroutineScope
@@ -50,10 +50,6 @@ fun HomeScreen(navController: NavHostController, scope: CoroutineScope, scaffold
                 .align(alignment = Alignment.BottomEnd)
                 .padding(all = 16.dp),
             onClick = {
-                val user = User()
-                runBlocking{launch{ addUser(user) }}
-
-
                 navController.navigate("postCreation")
             }) {
             Icon(
@@ -69,5 +65,12 @@ fun createPost(text: String){
     var user = User()
     runBlocking { launch { user = getUserByDevice() } }
     val post = Post(posts.last().id, user, text, Date(), 0, emptyList<User>(), 0, emptyList<User>(), 0, emptyList<Comment>(), 0)
+    if(user.posts.isEmpty()){
+        user.posts = listOf(post)
+    } else {
+        user.posts += post
+    }
+    Log.d("CreatePostUserPostsLastPostText", user.posts.last().text)
+    // runBlocking { launch { updateUser(user) } }
     posts += post
 }

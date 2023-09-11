@@ -42,7 +42,13 @@ suspend fun addUser(user: User){
         .addOnFailureListener { e ->
             Log.w("DataBaseAddUserMethod", "Error adding user", e)
         }
+    //val gson = Gson()
+    //val jsonString = gson.toJson(user)
+    //val fileName = cacheDir.absolutePath+"/PostJson.json"
+    //val file = File("LoginedUser")
+    //file.writeText(jsonString)
 }
+
 suspend fun updateUser(user: User){
     db.collection("users").document(user.id.toString()).update(user.toMap())
         .addOnSuccessListener{
@@ -79,6 +85,7 @@ suspend fun getUserByDevice(): User {
 
 suspend fun getUserByEmailOrPhone(emailPhone: String, password: String): User{
     var query: QuerySnapshot? = null
+    if(emailPhone.contains("A-Za-z@".toRegex())) {
         Log.d("DataBaseGetUserByEmailOrPhoneMethod", "email found")
         query = db.collection("users").whereEqualTo("email", emailPhone)
             .whereEqualTo("password", password)
@@ -86,7 +93,7 @@ suspend fun getUserByEmailOrPhone(emailPhone: String, password: String): User{
             .addOnSuccessListener { Log.d("DataBaseGetUserByEmailOrPhoneMethod", "User found") }
             .addOnFailureListener { Log.d("DataBaseGetUserByEmailOrPhoneMethod", "User not found") }
             .await()
-    if(emailPhone.contains("0-9+".toRegex())) {
+    } else if(emailPhone.contains("0-9+".toRegex())) {
         query = db.collection("users").whereEqualTo("phone", emailPhone)
             .whereEqualTo("password", password)
             .get()
