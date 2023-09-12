@@ -86,7 +86,6 @@ class MainActivity : ComponentActivity() {
                                 }
                         }
                         else{
-                            applicationContext.filesDir
                             Surface(color = MaterialTheme.colorScheme.background) {
                                 Scaffold(
                                     scaffoldState = scaffoldState,
