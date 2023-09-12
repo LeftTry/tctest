@@ -1,5 +1,6 @@
 package com.example.shebetar.NavHostContainer
 
+import android.content.Context
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ScaffoldState
@@ -17,6 +18,7 @@ import com.example.shebetar.RegisterLoginScreen.RegisterComponent
 import com.example.shebetar.RegisterLoginScreen.RegisterLoginScreen
 import com.example.shebetar.SearchScreen.SearchScreen
 import kotlinx.coroutines.CoroutineScope
+import java.io.File
 
 @Composable
 fun NavHostContainer(
@@ -24,7 +26,8 @@ fun NavHostContainer(
     padding: PaddingValues,
     scope: CoroutineScope,
     scaffoldState: ScaffoldState,
-    start: String
+    start: String,
+    context: Context
 ) {
     NavHost(
         navController = navController,
@@ -44,7 +47,7 @@ fun NavHostContainer(
                 PostCreationScreen(navController)
             }
             composable("register"){
-                RegisterComponent(navController)
+                RegisterComponent(navController, context)
             }
             composable("login"){
                 LoginComponent(navController)

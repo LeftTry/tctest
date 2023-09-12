@@ -1,6 +1,7 @@
 package com.example.shebetar.DataBase
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import com.example.shebetar.Classes.User.User
 import com.google.firebase.firestore.DocumentSnapshot
@@ -8,7 +9,16 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
+import java.nio.charset.Charset
+
 
 @SuppressLint("StaticFieldLeak")
 
@@ -18,7 +28,7 @@ val MODEL: String
 = android.os.Build.MODEL
 
 // Write data to the database
-suspend fun addUser(user: User){
+suspend fun addUser(user: User, context: Context){
     // Defining a query to find the last added document
     val query = db.collection("users").orderBy("dateOfJoin", Query.Direction.DESCENDING).limit(1)
 
@@ -42,11 +52,7 @@ suspend fun addUser(user: User){
         .addOnFailureListener { e ->
             Log.w("DataBaseAddUserMethod", "Error adding user", e)
         }
-    //val gson = Gson()
-    //val jsonString = gson.toJson(user)
-    //val fileName = cacheDir.absolutePath+"/PostJson.json"
-    //val file = File("LoginedUser")
-    //file.writeText(jsonString)
+        runBlocking { launch { writeDataToJson(user, context, fileName = "LoginedUser") } }
 }
 
 suspend fun updateUser(user: User){
@@ -153,4 +159,25 @@ fun logoutDevice(){
         .addOnFailureListener { e ->
             Log.w("DataBaseLogoutDeviceMethod", "Error adding device", e)
         }
+}
+
+suspend fun writeDataToJson(user: User, context: Context, fileName: String){
+    val gson = Gson()
+    val jsonString = gson.toJson(user)
+    val filesDir = context.filesDir
+    val file = File(filesDir, fileName)
+    if (!file.exists()) {
+        withContext(Dispatchers.IO) {
+            file.createNewFile()
+        }
+    }
+    val fileOutputStream: FileOutputStream =
+        context.openFileOutput(fileName, Context.MODE_PRIVATE)
+    withContext(Dispatchers.IO) {
+        fileOutputStream.write(jsonString.toByteArray(Charset.forName("UTF-8")))
+    }
+}
+
+fun readDataFromJson(){
+
 }

@@ -1,6 +1,7 @@
 package com.example.shebetar.RegisterLoginScreen
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.util.Log
 import android.widget.DatePicker
 import androidx.compose.foundation.layout.Column
@@ -33,11 +34,12 @@ import com.example.shebetar.TopNavBar.TopNavBar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.io.File
 import java.util.Calendar
 import java.util.Date
 
 @Composable
-fun RegisterComponent(navController: NavHostController){
+fun RegisterComponent(navController: NavHostController, context: Context){
     //Initializing TextField vars
     val username = remember { mutableStateOf("") }
     val firstName = remember { mutableStateOf("") }
@@ -144,7 +146,7 @@ fun RegisterComponent(navController: NavHostController){
                 runBlocking {
                     launch(Dispatchers.IO) {
                         user = User(firstName.value, lastName.value, username.value, email.value, phone.value, password.value, date)
-                        addUser(user)
+                        addUser(user, context)
                     }
                 }
                 loginDevice(user)

@@ -2,6 +2,7 @@ package com.example.shebetar
 
 import android.app.Activity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -36,6 +37,7 @@ class MainActivity : ComponentActivity() {
             MaterialTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                         val navController = rememberNavController()
+                    MediaStore.Video.Media.RELATIVE_PATH
                         var isDeviceLogined = false
                     runBlocking{launch{
                         isDeviceLogined = isDeviceLogined() }}
@@ -76,13 +78,15 @@ class MainActivity : ComponentActivity() {
                                                         padding         = padding,
                                                         scope,
                                                         scaffoldState,
-                                                            start = "home"
+                                                            start = "home",
+                                                            context = applicationContext
                                                         )
                                                     }
                                         )
                                 }
                         }
                         else{
+                            applicationContext.filesDir
                             Surface(color = MaterialTheme.colorScheme.background) {
                                 Scaffold(
                                     scaffoldState = scaffoldState,
@@ -112,7 +116,8 @@ class MainActivity : ComponentActivity() {
                                             padding         = padding,
                                             scope,
                                             scaffoldState,
-                                            start = "registerLogin"
+                                            start = "registerLogin",
+                                            context = applicationContext
                                         )
                                     }
                                 )
