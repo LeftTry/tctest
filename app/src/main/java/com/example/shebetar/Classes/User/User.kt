@@ -23,13 +23,13 @@ data class User(
     var profilePicture: Picture,
     var backgroundPicture: Picture,
     var followersQuantity: Long,
-    var followers: List<User>,
+    var followers: List<Int>,
     var followingQuantity: Long,
-    var following: List<User>,
-    var posts: List<Post>,
-    var likedPosts: List<Post>,
-    var repostedPosts: List<Post>,
-    var comments: List<Comment>
+    var following: List<Int>,
+    var posts: List<Int>,
+    var likedPosts: List<Int>,
+    var repostedPosts: List<Int>,
+    var comments: List<Int>
 ){
     constructor() : this(
         0,
@@ -113,13 +113,13 @@ data class User(
             profilePicture = Picture()
             backgroundPicture = Picture()
             followersQuantity = data["followersQuantity"] as Long
-            followers = data["followers"] as List<User>
+            followers = data["followers"] as List<Int>
             followingQuantity = data["followingQuantity"] as Long
-            following = data["following"] as List<User>
-            posts = data["posts"] as List<Post>
-            likedPosts = data["likedPosts"] as List<Post>
-            repostedPosts = data["repostedPosts"] as List<Post>
-            comments = data["comments"] as List<Comment>
+            following = data["following"] as List<Int>
+            posts = data["posts"] as List<Int>
+            likedPosts = data["likedPosts"] as List<Int>
+            repostedPosts = data["repostedPosts"] as List<Int>
+            comments = data["comments"] as List<Int>
             Log.d("DeviceUserGetMethod", "found")
         } else {
             Log.d("DeviceUserGetMethod", "not found")
@@ -140,13 +140,13 @@ data class User(
         profilePicture = Picture()
         backgroundPicture = Picture()
         followersQuantity = data["followersQuantity"] as Long
-        followers = data["followers"] as List<User>
+        followers = data["followers"] as List<Int>
         followingQuantity = data["followingQuantity"] as Long
-        following = data["following"] as List<User>
-        posts = data["posts"] as List<Post>
-        likedPosts = data["likedPosts"] as List<Post>
-        repostedPosts = data["repostedPosts"] as List<Post>
-        comments = data["comments"] as List<Comment>
+        following = data["following"] as List<Int>
+        posts = data["posts"] as List<Int>
+        likedPosts = data["likedPosts"] as List<Int>
+        repostedPosts = data["repostedPosts"] as List<Int>
+        comments = data["comments"] as List<Int>
         Log.d("DeviceUserGetMethod", "found")
     }
 }

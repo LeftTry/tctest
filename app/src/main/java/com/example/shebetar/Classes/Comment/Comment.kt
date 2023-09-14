@@ -4,10 +4,10 @@ import android.view.ViewParent
 import com.example.shebetar.Classes.User.User
 
 data class Comment(
-    val author: User,
+    val author: Int,
     val text: String,
     val likesQuantity: Int,
-    val usersLiked: List<User>,
+    val usersLiked: List<Int>,
     val parent: Comment?,
-    val childs: List<Comment>
+    val children: List<Int>
 )

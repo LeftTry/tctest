@@ -3,6 +3,7 @@ package com.example.shebetar.DataBase
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
+import com.example.shebetar.Classes.Post.Post
 import com.example.shebetar.Classes.User.User
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
@@ -29,13 +30,13 @@ val MODEL: String
 
 // Write data to the database
 suspend fun addUser(user: User, context: Context){
-    // Defining a query to find the last added document
+    // Defining a query to find the last added user
     val query = db.collection("users").orderBy("dateOfJoin", Query.Direction.DESCENDING).limit(1)
 
     // Executing the query and getting the results
     val querySnapshot: QuerySnapshot = query.get().await()
 
-    // Getting the last document from the results
+    // Getting the last user from the results
     val lastDocument: DocumentSnapshot? = querySnapshot.documents.first()
 
     // Getting the data from the last document
@@ -66,8 +67,34 @@ suspend fun updateUser(user: User){
         .await()
 }
 
+suspend fun getUserById(userId: Any?): DocumentSnapshot? {
+    val query = db.collection("users").document(userId.toString())
+        .get()
+        .addOnSuccessListener {
+            Log.d("DataBaseUserGetMethod", "found")
+        }
+        .addOnFailureListener { Log.d("DataBaseUserGetMethod", "not found")}
+        .await()
+    return query
+}
+
+suspend fun getUserByPost(postId: Int): User {
+    val query = db.collection("posts").document(postId.toString()).get()
+        .addOnSuccessListener {
+            Log.d("getUserByPost", "Post found")
+        }
+        .addOnFailureListener{
+            Log.d("getUserByPost", "Post not found")
+        }
+        .await()
+    val userId = query.get("authorId")
+    val user = User()
+    user.toUserFromDocumentSnapshot(getUserById(userId))
+    return user
+}
+
 suspend fun getUserByDevice(): User {
-    var query = db.collection("LoginedDevices").document(MODEL)
+    val query = db.collection("LoginedDevices").document(MODEL)
         .get()
         .addOnSuccessListener {
             Log.d("DataBaseUserGetMethod", "found")
@@ -77,15 +104,8 @@ suspend fun getUserByDevice(): User {
     Log.d("QueryGetUserMethod", query.toString())
     val id = query.get("userId")
     Log.d("IDGetUserMethod", id.toString())
-    query = db.collection("users").document(id.toString())
-        .get()
-        .addOnSuccessListener {
-            Log.d("DataBaseUserGetMethod", "found")
-        }
-        .addOnFailureListener { Log.d("DataBaseUserGetMethod", "not found")}
-        .await()
     val user = User()
-    user.toUserFromDocumentSnapshot(query)
+    user.toUserFromDocumentSnapshot(getUserById(id))
     return user
 }
 
@@ -161,6 +181,29 @@ fun logoutDevice(){
         }
 }
 
+suspend fun createPost(post: Post){
+    val query = db.collection("posts")
+        .orderBy("dateOfPublication", Query.Direction.DESCENDING).limit(1)
+        .get()
+        .addOnSuccessListener {
+            Log.d("createPost", "Previous post id got")
+        }
+        .addOnFailureListener {
+            Log.d("createPost", "Previous post id hasn't got")
+        }
+        .await()
+    val data = query.documents.first()
+    post.id = data.get("id").toString().toInt() + 1
+    db.collection("posts").document(post.id.toString())
+        .set(post.toMap())
+        .addOnSuccessListener {
+            Log.d("CreatePost", "Post has been created")
+        }
+        .addOnFailureListener {
+            Log.d("CreatePost", "Post has not been created")
+        }
+}
+
 suspend fun writeDataToJson(user: User, context: Context, fileName: String){
     val gson = Gson()
     val jsonString = gson.toJson(user)
@@ -176,8 +219,4 @@ suspend fun writeDataToJson(user: User, context: Context, fileName: String){
     withContext(Dispatchers.IO) {
         fileOutputStream.write(jsonString.toByteArray(Charset.forName("UTF-8")))
     }
-}
-
-fun readDataFromJson(){
-
 }

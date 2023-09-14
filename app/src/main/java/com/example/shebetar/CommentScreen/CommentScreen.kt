@@ -17,12 +17,12 @@ import com.example.shebetar.Classes.Post.Post
 import com.example.shebetar.HomeScreen.PostItem
 
 @Composable
-fun CommentScreen(post: Post){
+fun CommentScreen(postId: String?){
     val commentText = remember { mutableStateOf("") }
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        PostItem(post = post)
+        PostItem(post = )
         Row (
             modifier = Modifier.fillMaxWidth()
         ){
