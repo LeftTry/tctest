@@ -6,8 +6,8 @@ import java.util.Date
 import java.util.HashMap
 
 data class Post(
-    var id: Int,
-    val authorId: Int,
+    var id: Long,
+    val authorId: Long,
     val text: String,
     val dateOfPublication: Date,
     val likesQuantity: Int,

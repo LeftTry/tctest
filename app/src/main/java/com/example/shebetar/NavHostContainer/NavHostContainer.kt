@@ -46,7 +46,7 @@ fun NavHostContainer(
                 NotificationsScreen()
             }
             composable("postCreation"){
-                PostCreationScreen(navController)
+                PostCreationScreen(navController, context)
             }
             composable("register"){
                 RegisterComponent(navController, context)

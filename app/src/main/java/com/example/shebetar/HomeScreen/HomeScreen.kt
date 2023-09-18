@@ -64,13 +64,13 @@ fun HomeScreen(navController: NavHostController, scope: CoroutineScope, scaffold
 fun createPost(text: String){
     var user = User()
     runBlocking { launch { user = getUserByDevice() } }
-    val post = Post(posts.last().id, user, text, Date(), 0, emptyList<User>(), 0, emptyList<User>(), 0, emptyList<Comment>(), 0)
+    val post = Post(posts.last().id, user.id, text, Date(), 0, emptyList(), 0, emptyList(), 0, emptyList(), 0)
     if(user.posts.isEmpty()){
-        user.posts = listOf(post)
+        user.posts = listOf(post.id)
     } else {
-        user.posts += post
+        user.posts += post.id
     }
-    Log.d("CreatePostUserPostsLastPostText", user.posts.last().text)
+    Log.d("CreatePostUserPostsLastPostText", user.posts.last().toString())
     // runBlocking { launch { updateUser(user) } }
     posts += post
 }

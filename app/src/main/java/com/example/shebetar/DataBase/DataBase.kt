@@ -181,7 +181,7 @@ fun logoutDevice(){
         }
 }
 
-suspend fun createPost(post: Post){
+suspend fun createPostDB(post: Post){
     val query = db.collection("posts")
         .orderBy("dateOfPublication", Query.Direction.DESCENDING).limit(1)
         .get()
@@ -193,7 +193,7 @@ suspend fun createPost(post: Post){
         }
         .await()
     val data = query.documents.first()
-    post.id = data.get("id").toString().toInt() + 1
+    post.id = data.get("id").toString().toLong() + 1
     db.collection("posts").document(post.id.toString())
         .set(post.toMap())
         .addOnSuccessListener {
@@ -204,7 +204,7 @@ suspend fun createPost(post: Post){
         }
 }
 
-suspend fun writeDataToJson(user: User, context: Context, fileName: String){
+suspend fun writeDataToJson(user: User, context: Context, fileName: String): String? {
     val gson = Gson()
     val jsonString = gson.toJson(user)
     val filesDir = context.filesDir
@@ -219,4 +219,11 @@ suspend fun writeDataToJson(user: User, context: Context, fileName: String){
     withContext(Dispatchers.IO) {
         fileOutputStream.write(jsonString.toByteArray(Charset.forName("UTF-8")))
     }
+    return jsonString
+}
+
+fun readUserDataFromJson(fileName: String, context: Context): User? {
+    val jsonString: String = File(context.filesDir, fileName).readText()
+    val gson = Gson()
+    return gson.fromJson(jsonString, User::class.java)
 }

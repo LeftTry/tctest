@@ -1,5 +1,6 @@
 package com.example.shebetar.PostCreationScreen
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.defaultMinSize
@@ -26,11 +27,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.shebetar.Classes.Post.Post
+import com.example.shebetar.DataBase.createPostDB
+import com.example.shebetar.DataBase.readUserDataFromJson
 import com.example.shebetar.HomeScreen.createPost
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PostCreationScreen(navController: NavHostController){
+fun PostCreationScreen(navController: NavHostController, context: Context){
     val text = remember { mutableStateOf("") }
     IconButton(
         modifier = Modifier
@@ -47,7 +54,10 @@ fun PostCreationScreen(navController: NavHostController){
     ){
         Button(
             onClick = {
+                val user = readUserDataFromJson("LoginedUser.json", context)
+                val post = Post(0, user!!.id, text.value, Date(), 0, emptyList(), 0, emptyList(), 0, emptyList(), 0)
                 createPost(text.value)
+                runBlocking { launch { createPostDB(post) }}
                 navController.navigate("home")
             },
             modifier = Modifier
