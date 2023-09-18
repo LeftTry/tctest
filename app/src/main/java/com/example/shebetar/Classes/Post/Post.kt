@@ -1,22 +1,25 @@
 package com.example.shebetar.Classes.Post
 
+import android.graphics.Picture
+import android.util.Log
 import com.example.shebetar.Classes.Comment.Comment
 import com.example.shebetar.Classes.User.User
+import com.google.firebase.firestore.DocumentSnapshot
 import java.util.Date
 import java.util.HashMap
 
 data class Post(
     var id: Long,
-    val authorId: Long,
-    val text: String,
-    val dateOfPublication: Date,
-    val likesQuantity: Int,
-    val usersLiked: List<Int>,
-    val repostsQuantity: Int,
-    val usersReposted: List<Int>,
-    val commentsQuantity: Int,
-    val comments: List<Int>,
-    val viewsQuantity: Int
+    var authorId: Long,
+    var text: String,
+    var dateOfPublication: Date,
+    var likesQuantity: Int,
+    var usersLiked: List<Int>,
+    var repostsQuantity: Int,
+    var usersReposted: List<Int>,
+    var commentsQuantity: Int,
+    var comments: List<Int>,
+    var viewsQuantity: Int
 ) {
     constructor() : this(
         0,
@@ -45,5 +48,25 @@ data class Post(
         map["comments"] = comments
         map["viewsQuantity"] = viewsQuantity
         return map
+    }
+
+    fun toPostFromDocumentSnapshot(documentSnapshot: DocumentSnapshot?){
+        if (documentSnapshot?.exists() == true) {
+            val data = documentSnapshot.data
+            id = data?.get("id") as Long
+            authorId = data["authorId"] as Long
+            text = data["text"] as String
+            dateOfPublication = data["dateOfPublication"] as Date
+            likesQuantity = data["likesQuantity"] as Int
+            usersLiked = data["usersLiked"] as List<Int>
+            repostsQuantity = data["repostsQuantity"] as Int
+            usersReposted = data["usersReposted"] as List<Int>
+            commentsQuantity = data["commentsQuantity"] as Int
+            comments = data["comments"] as List<Int>
+            viewsQuantity = data["viewsQuantity"] as Int
+            Log.d("toPostFromDocumentSnapshot", "Success")
+        } else {
+            Log.d("toPostFromDocumentSnapshot", "Failure")
+        }
     }
 }

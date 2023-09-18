@@ -204,6 +204,21 @@ suspend fun createPostDB(post: Post){
         }
 }
 
+suspend fun getPostDB(postId: Long): Post {
+    val query = db.collection("posts").document(postId.toString())
+        .get()
+        .addOnSuccessListener{
+            Log.d("getPostDB", "Post found")
+        }
+        .addOnFailureListener {
+            Log.d("getPostDB", "Post not found")
+        }
+        .await()
+    val post = Post()
+    post.toPostFromDocumentSnapshot(query)
+    return post
+}
+
 suspend fun writeDataToJson(user: User, context: Context, fileName: String): String? {
     val gson = Gson()
     val jsonString = gson.toJson(user)

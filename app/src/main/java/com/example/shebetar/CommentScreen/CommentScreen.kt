@@ -14,7 +14,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.shebetar.Classes.Post.Post
+import com.example.shebetar.DataBase.getPostDB
 import com.example.shebetar.HomeScreen.PostItem
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun CommentScreen(postId: String?){
@@ -22,7 +25,9 @@ fun CommentScreen(postId: String?){
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        PostItem(post = )
+        var post = Post()
+        runBlocking { launch { post = getPostDB(postId!!.toLong()) } }
+        PostItem(post = post)
         Row (
             modifier = Modifier.fillMaxWidth()
         ){
