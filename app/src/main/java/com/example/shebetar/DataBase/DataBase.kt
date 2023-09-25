@@ -93,6 +93,7 @@ suspend fun getUserByPost(postId: Int): User {
     return user
 }
 
+/*
 suspend fun getUserByDevice(): User {
     val query = db.collection("LoginedDevices").document(MODEL)
         .get()
@@ -108,6 +109,7 @@ suspend fun getUserByDevice(): User {
     user.toUserFromDocumentSnapshot(getUserById(id))
     return user
 }
+*/
 
 suspend fun getUserByEmailOrPhone(emailPhone: String, password: String): User{
     var query: QuerySnapshot? = null

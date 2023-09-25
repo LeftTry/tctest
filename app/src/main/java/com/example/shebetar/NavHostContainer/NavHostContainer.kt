@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.shebetar.Classes.Post.Post
 import com.example.shebetar.CommentScreen.CommentScreen
 import com.example.shebetar.HomeScreen.HomeScreen
 import com.example.shebetar.NotificationsScreen.NotificationsScreen
@@ -29,7 +28,6 @@ fun NavHostContainer(
     scaffoldState: ScaffoldState,
     start: String,
     context: Context,
-    post: Post
 ) {
     NavHost(
         navController = navController,
@@ -58,7 +56,7 @@ fun NavHostContainer(
                 RegisterLoginScreen(navController = navController)
             }
             composable("profile"){
-                ProfileScreen(scope, scaffoldState)
+                ProfileScreen(scope, scaffoldState, context)
             }
             composable("comments/{postId}"){
             navBackStackEntry ->

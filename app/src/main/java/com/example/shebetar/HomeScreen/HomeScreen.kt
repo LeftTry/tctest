@@ -1,5 +1,6 @@
 package com.example.shebetar.HomeScreen
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,10 +20,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.shebetar.Classes.Comment.Comment
 import com.example.shebetar.Classes.Post.Post
 import com.example.shebetar.Classes.User.User
-import com.example.shebetar.DataBase.getUserByDevice
+import com.example.shebetar.DataBase.getUserById
+import com.example.shebetar.DataBase.readUserDataFromJson
+import com.example.shebetar.DataBase.updateUser
 import com.example.shebetar.TopNavBar.TopNavBar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -61,9 +63,10 @@ fun HomeScreen(navController: NavHostController, scope: CoroutineScope, scaffold
     }
 }
 
-fun createPost(text: String){
-    var user = User()
-    runBlocking { launch { user = getUserByDevice() } }
+fun createPost(text: String, context: Context){
+    val user = User()
+    runBlocking { launch {
+        user.toUserFromDocumentSnapshot(getUserById(readUserDataFromJson("LoginedUser.json", context)?.id)) } }
     val post = Post(posts.last().id, user.id, text, Date(), 0, emptyList(), 0, emptyList(), 0, emptyList(), 0)
     if(user.posts.isEmpty()){
         user.posts = listOf(post.id)
@@ -71,6 +74,6 @@ fun createPost(text: String){
         user.posts += post.id
     }
     Log.d("CreatePostUserPostsLastPostText", user.posts.last().toString())
-    // runBlocking { launch { updateUser(user) } }
+    runBlocking { launch { updateUser(user) } }
     posts += post
 }

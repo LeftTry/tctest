@@ -1,5 +1,6 @@
 package com.example.shebetar.ProfileScreen
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,7 +25,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.shebetar.Classes.User.User
-import com.example.shebetar.DataBase.getUserByDevice
+import com.example.shebetar.DataBase.getUserById
+import com.example.shebetar.DataBase.readUserDataFromJson
 import com.example.shebetar.R
 import com.example.shebetar.TopNavBar.TopNavBar
 import kotlinx.coroutines.CoroutineScope
@@ -32,9 +34,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun ProfileScreen(scope: CoroutineScope, scaffoldState: ScaffoldState){
-    var user = User()
-    runBlocking{launch{user = getUserByDevice()
+fun ProfileScreen(scope: CoroutineScope, scaffoldState: ScaffoldState, context: Context){
+    val user = User()
+    runBlocking{launch{user.toUserFromDocumentSnapshot(getUserById(readUserDataFromJson("LoginedUser.json", context)?.id))
         }}
     Log.d("Profile", user.toString())
     Column(

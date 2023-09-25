@@ -19,7 +19,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.shebetar.BottomNavBar.BottomNavigationBar
-import com.example.shebetar.Classes.Post.Post
 import com.example.shebetar.DataBase.isDeviceLogined
 import com.example.shebetar.DataBase.logoutDevice
 import com.example.shebetar.HomeScreen.HomeScreen
@@ -80,8 +79,7 @@ class MainActivity : ComponentActivity() {
                                                         scope,
                                                         scaffoldState,
                                                             start = "home",
-                                                            context = applicationContext,
-                                                            Post()
+                                                            context = applicationContext
                                                         )
                                                     }
                                         )
@@ -118,8 +116,7 @@ class MainActivity : ComponentActivity() {
                                             scope,
                                             scaffoldState,
                                             start = "registerLogin",
-                                            context = applicationContext,
-                                            Post()
+                                            context = applicationContext
                                         )
                                     }
                                 )
