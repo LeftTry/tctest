@@ -54,7 +54,7 @@ fun PostCreationScreen(navController: NavHostController, context: Context){
     ){
         Button(
             onClick = {
-                val user = readUserDataFromJson("LoginedUser.json", context)
+                val user = readUserDataFromJson("LoginedUser", context)
                 val post = Post(0, user!!.id, text.value, Date(), 0, emptyList(), 0, emptyList(), 0, emptyList(), 0)
                 createPost(text.value, context)
                 runBlocking { launch { createPostDB(post) }}

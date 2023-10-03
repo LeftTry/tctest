@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.shebetar.Classes.Post.Post
 import com.example.shebetar.Classes.User.User
+import com.example.shebetar.DataBase.getPostsDB
 import com.example.shebetar.DataBase.getUserById
 import com.example.shebetar.DataBase.readUserDataFromJson
 import com.example.shebetar.DataBase.updateUser
@@ -33,6 +34,8 @@ import java.util.Date
 
 @Composable
 fun HomeScreen(navController: NavHostController, scope: CoroutineScope, scaffoldState: ScaffoldState) {
+    posts = getPostsDB()
+    Log.d("HomeScreen", posts.toString())
     Column {
         TopNavBar(scope = scope, scaffoldState = scaffoldState)
         LazyColumn(
@@ -66,7 +69,7 @@ fun HomeScreen(navController: NavHostController, scope: CoroutineScope, scaffold
 fun createPost(text: String, context: Context){
     val user = User()
     runBlocking { launch {
-        user.toUserFromDocumentSnapshot(getUserById(readUserDataFromJson("LoginedUser.json", context)?.id)) } }
+        user.toUserFromDocumentSnapshot(getUserById(readUserDataFromJson("LoginedUser", context)?.id)) } }
     val post = Post(posts.last().id, user.id, text, Date(), 0, emptyList(), 0, emptyList(), 0, emptyList(), 0)
     if(user.posts.isEmpty()){
         user.posts = listOf(post.id)

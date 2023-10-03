@@ -53,7 +53,7 @@ suspend fun addUser(user: User, context: Context){
         .addOnFailureListener { e ->
             Log.w("DataBaseAddUserMethod", "Error adding user", e)
         }
-        runBlocking { launch { writeDataToJson(user, context, fileName = "LoginedUser") } }
+        writeDataToJson(user, context, fileName = "LoginedUser")
 }
 
 suspend fun updateUser(user: User){
@@ -111,7 +111,7 @@ suspend fun getUserByDevice(): User {
 }
 */
 
-suspend fun getUserByEmail(email: String, password: String): User{
+suspend fun getUserByEmail(context: Context, email: String, password: String): User{
     val query = db.collection("users").whereEqualTo("email", email)
         .whereEqualTo("password", password)
         .get()
@@ -121,6 +121,7 @@ suspend fun getUserByEmail(email: String, password: String): User{
     val user = User()
     user.toUserFromQuerySnapshot(query)
     Log.d("GetUserByEmail", user.toString())
+    writeDataToJson(user, context, fileName = "LoginedUser")
     return user
 }
 suspend fun deleteUser(user: User){
@@ -185,6 +186,7 @@ suspend fun createPostDB(post: Post){
         .await()
     val data = query.documents.first()
     post.id = data.get("id").toString().toLong() + 1
+    Log.d("createPost", post.id.toString())
     db.collection("posts").document(post.id.toString())
         .set(post.toMap())
         .addOnSuccessListener {
@@ -210,6 +212,36 @@ suspend fun getPostDB(postId: Long): Post {
     return post
 }
 
+suspend fun getLastPostId(): Long {
+    val query = db.collection("posts")
+        .orderBy("dateOfPublication", Query.Direction.DESCENDING).limit(1)
+        .get()
+        .addOnSuccessListener {
+            Log.d("getLastPostId", "Previous post id got")
+        }
+        .addOnFailureListener {
+            Log.d("getLastPostId", "Previous post id hasn't got")
+        }
+        .await()
+    val data = query.documents.first()
+    return data.get("id").toString().toLong()
+}
+
+fun getPostsDB(): List<Post>{
+    val posts: MutableList<Post> = mutableListOf()
+    var lastId: Long = 1
+    runBlocking{ launch{ lastId = getLastPostId() }}
+    var currentId: Long = 1
+    while(currentId <= lastId){
+        var post = Post()
+        runBlocking { launch { post = getPostDB(currentId) } }
+        posts += post
+        currentId++
+    }
+    Log.d("getPostsDB", posts.toString())
+    return posts
+}
+
 suspend fun writeDataToJson(user: User, context: Context, fileName: String): String? {
     val gson = Gson()
     val jsonString = gson.toJson(user)
@@ -218,7 +250,6 @@ suspend fun writeDataToJson(user: User, context: Context, fileName: String): Str
     if (!file.exists()) {
         withContext(Dispatchers.IO) {
             file.createNewFile()
-            Log.d("writeDataToJson", File(context.filesDir, fileName).readText())
         }
     }
     val fileOutputStream: FileOutputStream =
@@ -226,6 +257,7 @@ suspend fun writeDataToJson(user: User, context: Context, fileName: String): Str
     withContext(Dispatchers.IO) {
         fileOutputStream.write(jsonString.toByteArray(Charset.forName("UTF-8")))
     }
+    Log.d("writeDataToJson", File(context.filesDir, fileName).readText())
     return jsonString
 }
 

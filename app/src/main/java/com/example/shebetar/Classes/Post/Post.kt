@@ -1,25 +1,21 @@
 package com.example.shebetar.Classes.Post
 
-import android.graphics.Picture
 import android.util.Log
-import com.example.shebetar.Classes.Comment.Comment
-import com.example.shebetar.Classes.User.User
 import com.google.firebase.firestore.DocumentSnapshot
 import java.util.Date
-import java.util.HashMap
 
 data class Post(
     var id: Long,
     var authorId: Long,
     var text: String,
     var dateOfPublication: Date,
-    var likesQuantity: Int,
-    var usersLiked: List<Int>,
-    var repostsQuantity: Int,
-    var usersReposted: List<Int>,
-    var commentsQuantity: Int,
-    var comments: List<Int>,
-    var viewsQuantity: Int
+    var likesQuantity: Long,
+    var usersLiked: List<Long>,
+    var repostsQuantity: Long,
+    var usersReposted: List<Long>,
+    var commentsQuantity: Long,
+    var comments: List<Long>,
+    var viewsQuantity: Long
 ) {
     constructor() : this(
         0,
@@ -56,14 +52,14 @@ data class Post(
             id = data?.get("id") as Long
             authorId = data["authorId"] as Long
             text = data["text"] as String
-            dateOfPublication = data["dateOfPublication"] as Date
-            likesQuantity = data["likesQuantity"] as Int
-            usersLiked = data["usersLiked"] as List<Int>
-            repostsQuantity = data["repostsQuantity"] as Int
-            usersReposted = data["usersReposted"] as List<Int>
-            commentsQuantity = data["commentsQuantity"] as Int
-            comments = data["comments"] as List<Int>
-            viewsQuantity = data["viewsQuantity"] as Int
+            dateOfPublication = documentSnapshot.getTimestamp("dateOfPublication")?.toDate()!!
+            likesQuantity = data["likesQuantity"] as Long
+            usersLiked = data["usersLiked"] as List<Long>
+            repostsQuantity = data["repostsQuantity"] as Long
+            usersReposted = data["usersReposted"] as List<Long>
+            commentsQuantity = data["commentsQuantity"] as Long
+            comments = data["comments"] as List<Long>
+            viewsQuantity = data["viewsQuantity"] as Long
             Log.d("toPostFromDocumentSnapshot", "Success")
         } else {
             Log.d("toPostFromDocumentSnapshot", "Failure")

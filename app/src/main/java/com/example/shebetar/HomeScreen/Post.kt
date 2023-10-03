@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -36,7 +37,7 @@ var posts = listOf(
 @Composable
 fun PostItem(post: Post) {
     var like by remember { mutableStateOf(Icons.Default.FavoriteBorder) }
-    var likes by remember { mutableStateOf(post.likesQuantity) }
+    var likes by remember { mutableLongStateOf(post.likesQuantity) }
     var liked = false
     val user = User()
     Card(

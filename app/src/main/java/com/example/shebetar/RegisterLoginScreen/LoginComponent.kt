@@ -1,5 +1,6 @@
 package com.example.shebetar.RegisterLoginScreen
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun LoginComponent(navController: NavHostController){
+fun LoginComponent(navController: NavHostController, context: Context){
     TopNavBar()
     // State variables for email and password
     val emailPhoneState = remember { mutableStateOf("") }
@@ -51,7 +52,7 @@ fun LoginComponent(navController: NavHostController){
 
         // Login button
         Button(
-            onClick = { val user = performLogin(emailPhoneState.value, passwordState.value)
+            onClick = { val user = performLogin(context, emailPhoneState.value, passwordState.value)
                         loginDevice(user)
                         navController.navigate("home")},
             modifier = Modifier.padding(top = 16.dp)
@@ -61,8 +62,8 @@ fun LoginComponent(navController: NavHostController){
     }
 }
 
-private fun performLogin(emailPhone: String, password: String): User {
+private fun performLogin(context: Context, emailPhone: String, password: String): User {
     var user = User()
-    runBlocking { launch{ user = getUserByEmail(emailPhone, password) } }
+    runBlocking { launch{ user = getUserByEmail(context, emailPhone, password) } }
     return user
 }

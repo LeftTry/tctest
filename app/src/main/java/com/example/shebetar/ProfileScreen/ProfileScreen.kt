@@ -36,7 +36,7 @@ import kotlinx.coroutines.runBlocking
 @Composable
 fun ProfileScreen(scope: CoroutineScope, scaffoldState: ScaffoldState, context: Context){
     val user = User()
-    runBlocking{launch{user.toUserFromDocumentSnapshot(getUserById(readUserDataFromJson("LoginedUser.json", context)?.id))
+    runBlocking{launch{user.toUserFromDocumentSnapshot(getUserById(readUserDataFromJson("LoginedUser", context)?.id))
         }}
     Log.d("Profile", user.toString())
     Column(
