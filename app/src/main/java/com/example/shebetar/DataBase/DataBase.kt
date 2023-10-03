@@ -111,27 +111,16 @@ suspend fun getUserByDevice(): User {
 }
 */
 
-suspend fun getUserByEmailOrPhone(emailPhone: String, password: String): User{
-    var query: QuerySnapshot? = null
-    if(emailPhone.contains("A-Za-z@".toRegex())) {
-        Log.d("DataBaseGetUserByEmailOrPhoneMethod", "email found")
-        query = db.collection("users").whereEqualTo("email", emailPhone)
-            .whereEqualTo("password", password)
-            .get()
-            .addOnSuccessListener { Log.d("DataBaseGetUserByEmailOrPhoneMethod", "User found") }
-            .addOnFailureListener { Log.d("DataBaseGetUserByEmailOrPhoneMethod", "User not found") }
-            .await()
-    } else if(emailPhone.contains("0-9+".toRegex())) {
-        query = db.collection("users").whereEqualTo("phone", emailPhone)
-            .whereEqualTo("password", password)
-            .get()
-            .addOnSuccessListener { Log.d("DataBaseGetUserByEmailOrPhoneMethod", "User found") }
-            .addOnFailureListener { Log.d("DataBaseGetUserByEmailOrPhoneMethod", "User not found") }
-            .await()
-    }
+suspend fun getUserByEmail(email: String, password: String): User{
+    val query = db.collection("users").whereEqualTo("email", email)
+        .whereEqualTo("password", password)
+        .get()
+        .addOnSuccessListener { Log.d("GetUserByEmail", "User found") }
+        .addOnFailureListener { Log.d("GetUserByEmail", "User not found") }
+        .await()
     val user = User()
     user.toUserFromQuerySnapshot(query)
-    Log.d("DataBaseGetUserByEmailOrPhoneMethod", user.toString())
+    Log.d("GetUserByEmail", user.toString())
     return user
 }
 suspend fun deleteUser(user: User){
@@ -229,6 +218,7 @@ suspend fun writeDataToJson(user: User, context: Context, fileName: String): Str
     if (!file.exists()) {
         withContext(Dispatchers.IO) {
             file.createNewFile()
+            Log.d("writeDataToJson", File(context.filesDir, fileName).readText())
         }
     }
     val fileOutputStream: FileOutputStream =

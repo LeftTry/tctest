@@ -2,12 +2,9 @@ package com.example.shebetar.Classes.User
 
 import android.graphics.Picture
 import android.util.Log
-import com.example.shebetar.Classes.Comment.Comment
-import com.example.shebetar.Classes.Post.Post
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import java.util.Date
-import java.util.HashMap
 
 // User class
 data class User(
@@ -127,6 +124,7 @@ data class User(
     }
 
     fun toUserFromQuerySnapshot(querySnapshot: QuerySnapshot?){
+        if (querySnapshot == null) return
         val data = querySnapshot?.documents?.get(0)?.data
         id = data?.get("id") as Long
         firstName = data["firstName"] as String

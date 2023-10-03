@@ -25,13 +25,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.shebetar.Classes.Comment.Comment
 import com.example.shebetar.Classes.Post.Post
 import com.example.shebetar.Classes.User.User
 import java.util.Date
 
 var posts = listOf(
-    Post(0, User(), "Content of Post 0", Date(), 0, emptyList<User>(), 0, emptyList<User>(), 0, emptyList<Comment>(), 0)
+    Post(0, User().id, "Content of Post 0", Date(), 0, emptyList(), 0, emptyList(), 0, emptyList(), 0)
 )
 
 @Composable
@@ -39,6 +38,7 @@ fun PostItem(post: Post) {
     var like by remember { mutableStateOf(Icons.Default.FavoriteBorder) }
     var likes by remember { mutableStateOf(post.likesQuantity) }
     var liked = false
+    val user = User()
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -48,7 +48,9 @@ fun PostItem(post: Post) {
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = "@ ${post.author.nickname}",
+                text = "@ ${
+                    user.nickname
+                    }",
                 fontSize = 18.sp,
                 style = TextStyle(fontSize = 14.sp)
             )

@@ -16,7 +16,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.shebetar.Classes.User.User
-import com.example.shebetar.DataBase.getUserByEmailOrPhone
+import com.example.shebetar.DataBase.getUserByEmail
 import com.example.shebetar.DataBase.loginDevice
 import com.example.shebetar.TopNavBar.TopNavBar
 import kotlinx.coroutines.launch
@@ -63,6 +63,6 @@ fun LoginComponent(navController: NavHostController){
 
 private fun performLogin(emailPhone: String, password: String): User {
     var user = User()
-    runBlocking { launch{ user = getUserByEmailOrPhone(emailPhone, password) } }
+    runBlocking { launch{ user = getUserByEmail(emailPhone, password) } }
     return user
 }
