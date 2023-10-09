@@ -53,6 +53,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     implementation ("com.google.code.gson:gson:2.10.1")
     implementation ("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.google.android.gms:play-services-auth:20.7.0")

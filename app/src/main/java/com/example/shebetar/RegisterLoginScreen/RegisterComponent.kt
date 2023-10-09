@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.util.Log
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -34,7 +35,6 @@ import com.example.shebetar.TopNavBar.TopNavBar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.io.File
 import java.util.Calendar
 import java.util.Date
 
@@ -136,24 +136,41 @@ fun RegisterComponent(navController: NavHostController, context: Context){
         // Displaying the mDate value in the Text
         Text(text = "Selected Date: ${mDate.value}", fontSize = 30.sp, textAlign = TextAlign.Center)
         Button(onClick = {
-            if (password.value == repeatedPassword.value) {
-                val calendar = Calendar.getInstance()
-                calendar.set(Calendar.YEAR, mYear)
-                calendar.set(Calendar.MONTH, mMonth)
-                calendar.set(Calendar.DAY_OF_MONTH, mDay)
-                val date = calendar.time
-                var user = User()
-                runBlocking {
-                    launch(Dispatchers.IO) {
-                        user = User(firstName.value, lastName.value, username.value, email.value, phone.value, password.value, date)
-                        addUser(user, context)
+            if(Regex("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})\$")
+                    .matches(email.value)) {
+                if (password.value == repeatedPassword.value) {
+                    val calendar = Calendar.getInstance()
+                    calendar.set(Calendar.YEAR, mYear)
+                    calendar.set(Calendar.MONTH, mMonth)
+                    calendar.set(Calendar.DAY_OF_MONTH, mDay)
+                    val date = calendar.time
+                    var user = User()
+                    runBlocking {
+                        launch(Dispatchers.IO) {
+                            user = User(
+                                firstName.value,
+                                lastName.value,
+                                username.value,
+                                email.value,
+                                phone.value,
+                                password.value,
+                                date
+                            )
+                            addUser(user, context)
+                        }
                     }
+                    loginDevice(user)
+                    navController.navigate("home")
+                } else {
+                    val toast =
+                        Toast.makeText(context, "Passwords didn't match", Toast.LENGTH_SHORT)
+                    toast.show()
+                    Log.d("Tag", "${password.value} == ${repeatedPassword.value}")
                 }
-                loginDevice(user)
-                navController.navigate("home")
-            }
-            else{
-                Log.d("Tag", "${password.value} == ${repeatedPassword.value}")
+            } else {
+                val toast =
+                    Toast.makeText(context, "Email is incorrect", Toast.LENGTH_SHORT)
+                toast.show()
             }
                          },
             ) {
