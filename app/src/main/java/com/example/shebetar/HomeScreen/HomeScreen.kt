@@ -43,7 +43,7 @@ fun HomeScreen(navController: NavHostController, scope: CoroutineScope, scaffold
             contentPadding  = PaddingValues(10.dp)
         ) {
             items(posts) { post ->
-                PostItem(post)
+                PostItem(post, navController)
             }
         }
     }

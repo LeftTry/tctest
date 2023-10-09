@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.shebetar.Classes.Post.Post
 import com.example.shebetar.Classes.User.User
 import java.util.Date
@@ -35,7 +36,7 @@ var posts = listOf(
 )
 
 @Composable
-fun PostItem(post: Post) {
+fun PostItem(post: Post, navController: NavHostController) {
     var like by remember { mutableStateOf(Icons.Default.FavoriteBorder) }
     var likes by remember { mutableLongStateOf(post.likesQuantity) }
     var liked = false
@@ -87,7 +88,7 @@ fun PostItem(post: Post) {
                 }
                 Text(modifier = Modifier.align(alignment = Alignment.CenterVertically),
                     text = post.repostsQuantity.toString())
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { navController.navigate("comments/${post.id}") }) {
                     Icon(imageVector = Icons.Default.Face, contentDescription = "Comments")
                 }
                 Text(modifier = Modifier.align(alignment = Alignment.CenterVertically),
