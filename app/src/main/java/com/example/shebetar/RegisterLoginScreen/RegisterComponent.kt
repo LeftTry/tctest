@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -136,42 +137,8 @@ fun RegisterComponent(navController: NavHostController, context: Context){
         // Displaying the mDate value in the Text
         Text(text = "Selected Date: ${mDate.value}", fontSize = 30.sp, textAlign = TextAlign.Center)
         Button(onClick = {
-            if(Regex("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})\$")
-                    .matches(email.value)) {
-                if (password.value == repeatedPassword.value) {
-                    val calendar = Calendar.getInstance()
-                    calendar.set(Calendar.YEAR, mYear)
-                    calendar.set(Calendar.MONTH, mMonth)
-                    calendar.set(Calendar.DAY_OF_MONTH, mDay)
-                    val date = calendar.time
-                    var user = User()
-                    runBlocking {
-                        launch(Dispatchers.IO) {
-                            user = User(
-                                firstName.value,
-                                lastName.value,
-                                username.value,
-                                email.value,
-                                phone.value,
-                                password.value,
-                                date
-                            )
-                            addUser(user, context)
-                        }
-                    }
-                    loginDevice(user)
-                    navController.navigate("home")
-                } else {
-                    val toast =
-                        Toast.makeText(context, "Passwords didn't match", Toast.LENGTH_SHORT)
-                    toast.show()
-                    Log.d("Tag", "${password.value} == ${repeatedPassword.value}")
-                }
-            } else {
-                val toast =
-                    Toast.makeText(context, "Email is incorrect", Toast.LENGTH_SHORT)
-                toast.show()
-            }
+                checkCorrectInput(firstName, lastName, username, phone, email,
+                    password, repeatedPassword, context, navController, mDay, mMonth, mYear)
                          },
             ) {
             Text(text = "Submit")
@@ -179,4 +146,44 @@ fun RegisterComponent(navController: NavHostController, context: Context){
     }
 }
 
-
+fun checkCorrectInput(firstName: MutableState<String>, lastName: MutableState<String>, username: MutableState<String>,
+                      phone: MutableState<String>, email: MutableState<String>, password: MutableState<String>,
+                      repeatedPassword: MutableState<String>, context: Context, navController: NavHostController,
+                      mDay: Int, mMonth: Int, mYear: Int){
+    if(Regex("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})\$")
+            .matches(email.value)) {
+        if (password.value == repeatedPassword.value) {
+            val calendar = Calendar.getInstance()
+            calendar.set(Calendar.YEAR, mYear)
+            calendar.set(Calendar.MONTH, mMonth)
+            calendar.set(Calendar.DAY_OF_MONTH, mDay)
+            val date = calendar.time
+            var user = User()
+            runBlocking {
+                launch(Dispatchers.IO) {
+                    user = User(
+                        firstName.value,
+                        lastName.value,
+                        username.value,
+                        email.value,
+                        phone.value,
+                        password.value,
+                        date
+                    )
+                    addUser(user, context)
+                }
+            }
+            loginDevice(user)
+            navController.navigate("home")
+        } else {
+            val toast =
+                Toast.makeText(context, "Passwords didn't match", Toast.LENGTH_SHORT)
+            toast.show()
+            Log.d("Tag", "${password.value} == ${repeatedPassword.value}")
+        }
+    } else {
+        val toast =
+            Toast.makeText(context, "Email is incorrect", Toast.LENGTH_SHORT)
+        toast.show()
+    }
+}
