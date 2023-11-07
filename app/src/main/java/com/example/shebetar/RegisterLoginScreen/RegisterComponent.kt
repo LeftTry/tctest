@@ -9,11 +9,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.MaterialTheme
@@ -21,9 +25,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -82,43 +91,112 @@ fun RegisterComponent(navController: NavHostController, context: Context){
             mDate.value = "$dayOfMonth.${month+1}.$year"
         }, mYear, mMonth, mDay
     )
+    val scrollState = rememberScrollState()
+    val focusManager = LocalFocusManager.current
+    val scope = rememberCoroutineScope()
+
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
         TopNavBar()
-
-        TextField(value = username.value,           onValueChange = {newUsername -> username.value = newUsername},                          label = { Text(text = "Username")},           modifier = Modifier
+        OutlinedTextField(value = username.value,
+            onValueChange = {newUsername -> username.value = newUsername},
+            label = { Text(text = "Username")},
+            modifier = Modifier
             .align(Alignment.CenterHorizontally)
-            .padding(top = 10.dp, bottom = 5.dp))
-        TextField(value = firstName.value,          onValueChange = {newFirstName -> firstName.value = newFirstName},                       label = { Text(text = "First name")},         modifier = Modifier
+            .padding(top = 10.dp, bottom = 5.dp)
+            .onFocusChanged {
+                scope.launch {
+                    scrollState.animateScrollTo(scrollState.maxValue)
+                }
+            })
+        OutlinedTextField(value = firstName.value,
+            onValueChange = {newFirstName -> firstName.value = newFirstName},
+            label = { Text(text = "First name")},
+            modifier = Modifier
             .align(Alignment.CenterHorizontally)
-            .padding(5.dp))
-        TextField(value = lastName.value,           onValueChange = {newLastName -> lastName.value = newLastName},                          label = { Text(text = "Last name")},          modifier = Modifier
+            .padding(5.dp)
+            .onFocusChanged {
+                scope.launch {
+                    scrollState.animateScrollTo(scrollState.maxValue)
+                }
+            })
+        OutlinedTextField(value = lastName.value,
+            onValueChange = {newLastName -> lastName.value = newLastName},
+            label = { Text(text = "Last name")},
+            modifier = Modifier
             .align(Alignment.CenterHorizontally)
-            .padding(5.dp))
-        TextField(value = email.value,
-            onValueChange = {newEmail -> email.value = newEmail},                                   label = { Text(text = "Email")},              modifier = Modifier
+            .padding(5.dp)
+            .onFocusChanged {
+                scope.launch {
+                    scrollState.animateScrollTo(scrollState.maxValue)
+                }
+            })
+        OutlinedTextField(value = email.value,
+            onValueChange = {newEmail -> email.value = newEmail},
+            label = { Text(text = "Email")},
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(5.dp)
+                .onFocusChanged {
+                    scope.launch {
+                        scrollState.animateScrollTo(scrollState.maxValue)
+                    }
+                })
+        OutlinedTextField(value = phone.value,
+            onValueChange = {newPhone -> phone.value = newPhone},
+            label = { Text(text = "Phone")},
+            modifier = Modifier
             .align(Alignment.CenterHorizontally)
-            .padding(5.dp))
-        TextField(value = phone.value,              onValueChange = {newPhone -> phone.value = newPhone},                                   label = { Text(text = "Phone")},              modifier = Modifier
-            .align(Alignment.CenterHorizontally)
-            .padding(5.dp))
-        TextField(value = password.value,
+            .padding(5.dp)
+            .onFocusChanged {
+                scope.launch {
+                    scrollState.animateScrollTo(scrollState.maxValue)
+                }
+            })
+        OutlinedTextField(value = password.value,
             visualTransformation = PasswordVisualTransformation(),
-            onValueChange = {newPassword -> password.value = newPassword},                          label = { Text(text = "Password")},           modifier = Modifier
-            .align(Alignment.CenterHorizontally)
-            .padding(5.dp))
-        TextField(value = repeatedPassword.value,
+            onValueChange = {newPassword -> password.value = newPassword},
+            label = { Text(text = "Password")},
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(5.dp)
+                .onFocusChanged {
+                    scope.launch {
+                        scrollState.animateScrollTo(scrollState.maxValue)
+                    }
+                },
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(
+                onNext = {
+                    focusManager.moveFocus(FocusDirection.Down)
+                    scope.launch {
+                        scrollState.animateScrollTo(scrollState.maxValue)
+                    }
+                }
+            ),)
+        OutlinedTextField(value = repeatedPassword.value,
             visualTransformation = PasswordVisualTransformation(),
-            onValueChange = {newRepeatedPassword -> repeatedPassword.value = newRepeatedPassword},  label = { Text(text = "Repeat password")},    modifier = Modifier
-            .align(Alignment.CenterHorizontally)
-            .padding(5.dp))
+            onValueChange = {newRepeatedPassword -> repeatedPassword.value = newRepeatedPassword},
+            label = { Text(text = "Repeat password")},
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(5.dp)
+                .onFocusChanged {
+                    scope.launch {
+                        scrollState.animateScrollTo(scrollState.maxValue)
+                    }
+                })
         // Creating a button that on
         // click displays/shows the DatePickerDialog
         Button(onClick = {
             mDatePickerDialog.show()
             dateOfBirth.value = mDate.value
-        }, colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.surface, contentColor = MaterialTheme.colorScheme.inverseSurface), modifier = Modifier
+        }, colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.inverseSurface),
+            modifier = Modifier
             .align(Alignment.CenterHorizontally)
             .width(200.dp) ) {
                 Icon(
