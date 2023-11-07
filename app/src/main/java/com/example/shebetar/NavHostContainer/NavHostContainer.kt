@@ -60,7 +60,7 @@ fun NavHostContainer(
             }
             composable("comments/{postId}"){
             navBackStackEntry ->
-                CommentScreen(postId = navBackStackEntry.arguments?.getString("postId"))
+                CommentScreen(postId = navBackStackEntry.arguments?.getString("postId"), navController)
             }
         })
 
