@@ -228,7 +228,7 @@ fun checkCorrectInput(firstName: MutableState<String>, lastName: MutableState<St
                       phone: MutableState<String>, email: MutableState<String>, password: MutableState<String>,
                       repeatedPassword: MutableState<String>, context: Context, navController: NavHostController,
                       mDay: Int, mMonth: Int, mYear: Int){
-    if(Regex("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})\$")
+    if(Regex("^(?=.{1,64}@)[A-Za-z0-9_-]+(.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(.[A-Za-z0-9-]+)*(.[A-Za-z]{2,})$")
             .matches(email.value)) {
         if (password.value == repeatedPassword.value) {
             val calendar = Calendar.getInstance()

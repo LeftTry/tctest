@@ -56,7 +56,7 @@ fun NavHostContainer(
                 RegisterLoginScreen(navController = navController)
             }
             composable("profile"){
-                ProfileScreen(scope, scaffoldState, context)
+                ProfileScreen(context)
             }
             composable("comments/{postId}"){
             navBackStackEntry ->
