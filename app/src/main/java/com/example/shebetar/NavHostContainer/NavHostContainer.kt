@@ -18,6 +18,7 @@ import com.example.shebetar.RegisterLoginScreen.LoginComponent
 import com.example.shebetar.RegisterLoginScreen.RegisterComponent
 import com.example.shebetar.RegisterLoginScreen.RegisterLoginScreen
 import com.example.shebetar.SearchScreen.SearchScreen
+import com.example.shebetar.SettingsScreen.SettingsScreen
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -61,6 +62,9 @@ fun NavHostContainer(
             composable("comments/{postId}"){
             navBackStackEntry ->
                 CommentScreen(postId = navBackStackEntry.arguments?.getString("postId"), navController)
+            }
+            composable("settingsScreen"){
+                SettingsScreen()
             }
         })
 

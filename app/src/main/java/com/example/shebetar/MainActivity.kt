@@ -55,7 +55,9 @@ class MainActivity : ComponentActivity() {
                                         Text(
                                             "Settings",
                                             fontSize = 28.sp,
-                                            modifier = Modifier.clickable { })
+                                            modifier = Modifier.clickable {
+                                                navController.navigate("settingsScreen")
+                                            })
                                         Text(
                                             text = "LogOut",
                                             fontSize = 28.sp,
