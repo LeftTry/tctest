@@ -52,65 +52,12 @@ fun ProfileScreen(context: Context){
     runBlocking{launch{user.toUserFromDocumentSnapshot(getUserById(readUserDataFromJson("LoginedUser", context)?.id))
         }}
     Log.d("Profile", user.toString())
-    /*
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        TopNavBar(scope = scope, scaffoldState = scaffoldState)
-
-        Row (modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp)
-            .background(color = Color.Magenta)){
-            IconButton(onClick = { navController.navigate("home")}) {
-                Icon(
-                    Icons.Filled.ArrowBack,
-                    contentDescription = "Search button",
-                    tint = MaterialTheme.colorScheme.surface)
-            }
-            Box(modifier = Modifier.padding(top = 5.dp)) {
-                Image(
-                    painter = painterResource(id = R.drawable.basicavatar),
-                    contentScale = ContentScale.Crop,
-                    contentDescription = "avatar",
-                    modifier = Modifier
-                        .size(64.dp)
-                        .clip(CircleShape)
-                )
-            }
-        }
-
-        Row (modifier = Modifier
-            .fillMaxWidth()
-            .height(20.dp)
-            .background(color = androidx.compose.material3.MaterialTheme.colorScheme.surface)){
-
-            Column(modifier = Modifier
-                .padding(start = 50.dp, end = 15.dp)
-                .align(alignment = Alignment.CenterVertically)) {
-                Text(text = user.firstName, fontSize = 18.sp, modifier = Modifier.padding(top = 20.dp))
-                Text(text = "@${user.nickname}")
-            }
-
-            Text(text = user.lastName, fontSize = 18.sp, modifier = Modifier
-                .padding(end = 15.dp)
-                .align(alignment = Alignment.CenterVertically))
-        }
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .height(20.dp)
-            .background(color = androidx.compose.material3.MaterialTheme.colorScheme.surface)){
-
-        }
-        Divider(color = androidx.compose.material3.MaterialTheme.colorScheme.inverseSurface)
-    }
-
-     */
-    TwitterProfileScreen(user)
+    ProfileScreenComp(user)
 }
 
 @Composable
 fun ProfileScreen(user: User) {
+    // Variables for interface
     val bio by remember { mutableStateOf("Your bio goes here.") }
     val color = Color("${user.id} / ${user.nickname}".toHslColor())
     val initials = (user.nickname.take(1)).uppercase()
@@ -118,6 +65,8 @@ fun ProfileScreen(user: User) {
     val avatarHeight = 64.dp
     val bannerHeight = 150.dp
     val horizontalPadding = 16.dp
+    val spacerHeight = 16.dp
+
     Box (modifier = Modifier.fillMaxSize()){
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -144,10 +93,10 @@ fun ProfileScreen(user: User) {
                 text = "@" + user.nickname,
                 style = MaterialTheme.typography.headlineSmall,
                 color = Color.Blue,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier.padding(horizontal = horizontalPadding)
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(spacerHeight / 2))
 
             Text(
                 text = bio,
@@ -155,11 +104,11 @@ fun ProfileScreen(user: User) {
                 modifier = Modifier.padding(horizontal = horizontalPadding)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacerHeight))
 
             ProfileActions(user)
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(spacerHeight))
 
             Divider(
                 color = Color.Gray,
@@ -167,7 +116,7 @@ fun ProfileScreen(user: User) {
                 modifier = Modifier.padding(horizontal = horizontalPadding)
             )
 
-            TweetList(user)
+            PostList(user)
         }
         Box(
             Modifier
@@ -190,40 +139,43 @@ fun ProfileScreen(user: User) {
 
 @Composable
 fun ProfileActions(user: User) {
+    val padding = 16.dp
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(user.followingQuantity.toString(), modifier = Modifier.padding(16.dp))
-        Text(user.followersQuantity.toString(), modifier = Modifier.padding(16.dp))
+        Text(user.followingQuantity.toString(), modifier = Modifier.padding(padding))
+        Text(user.followersQuantity.toString(), modifier = Modifier.padding(padding))
     }
 }
 
 @Composable
-fun TweetList(user: User) {
+fun PostList(user: User) {
     LazyColumn {
         items(user.posts.size) { index ->
-            TweetCard()
+            PostCard()
         }
     }
 }
 
 @Composable
-fun TweetCard() {
+fun PostCard() {
+    val padding = 16.dp
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(padding),
         elevation = 4.dp
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(padding)
         ) {
             Text(
                 text = "Username",
                 style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier.padding(bottom = 8.dp)
+                modifier = Modifier.padding(bottom = padding / 2)
             )
             Text(
                 text = "This is a sample tweet. #JetpackCompose",
@@ -234,7 +186,7 @@ fun TweetCard() {
 }
 
 @Composable
-fun TwitterProfileScreen(user: User) {
+fun ProfileScreenComp(user: User) {
     Scaffold(
         topBar = {
             TopNavBar()

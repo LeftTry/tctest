@@ -16,29 +16,34 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+val topNavBarHeight = 50.dp
+
 @Composable
 fun TopNavBar(scope: CoroutineScope, scaffoldState: ScaffoldState){
+    val topNavBarColor = MaterialTheme.colorScheme.primary
+    val leftSideMenuColor = MaterialTheme.colorScheme.surface
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp)
-            .background(color = MaterialTheme.colorScheme.primary)
+            .height(topNavBarHeight)
+            .background(color = topNavBarColor)
     ) {
         IconButton(
             onClick = { scope.launch{ scaffoldState.drawerState.open() } }) {
             Icon(imageVector = Icons.Default.List, contentDescription = "LeftSideMenu",
-                tint = MaterialTheme.colorScheme.surface)
+                tint = leftSideMenuColor)
         }
     }
 }
 
 @Composable
 fun TopNavBar(){
+    val topNavBarColor = MaterialTheme.colorScheme.primary
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp)
-            .background(color = MaterialTheme.colorScheme.primary)
+            .height(topNavBarHeight)
+            .background(color = topNavBarColor)
     ) {
     }
 }

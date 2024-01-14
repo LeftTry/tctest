@@ -60,6 +60,10 @@ fun RegisterComponent(navController: NavHostController, context: Context){
     val repeatedPassword = remember { mutableStateOf("") }
     val dateOfBirth = remember { mutableStateOf("Select date") }
 
+    //Variables for interface
+    val padding = 5.dp
+    val topPadding = 10.dp
+
     // Fetching the Local Context
     val mContext = LocalContext.current
 
@@ -106,7 +110,7 @@ fun RegisterComponent(navController: NavHostController, context: Context){
             label = { Text(text = "Username")},
             modifier = Modifier
             .align(Alignment.CenterHorizontally)
-            .padding(top = 10.dp, bottom = 5.dp)
+            .padding(top = topPadding, bottom = padding)
             .onFocusChanged {
                 scope.launch {
                     scrollState.animateScrollTo(scrollState.maxValue)
@@ -117,7 +121,7 @@ fun RegisterComponent(navController: NavHostController, context: Context){
             label = { Text(text = "First name")},
             modifier = Modifier
             .align(Alignment.CenterHorizontally)
-            .padding(5.dp)
+            .padding(padding)
             .onFocusChanged {
                 scope.launch {
                     scrollState.animateScrollTo(scrollState.maxValue)
@@ -128,7 +132,7 @@ fun RegisterComponent(navController: NavHostController, context: Context){
             label = { Text(text = "Last name")},
             modifier = Modifier
             .align(Alignment.CenterHorizontally)
-            .padding(5.dp)
+            .padding(padding)
             .onFocusChanged {
                 scope.launch {
                     scrollState.animateScrollTo(scrollState.maxValue)
@@ -139,7 +143,7 @@ fun RegisterComponent(navController: NavHostController, context: Context){
             label = { Text(text = "Email")},
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(5.dp)
+                .padding(padding)
                 .onFocusChanged {
                     scope.launch {
                         scrollState.animateScrollTo(scrollState.maxValue)
@@ -150,7 +154,7 @@ fun RegisterComponent(navController: NavHostController, context: Context){
             label = { Text(text = "Phone")},
             modifier = Modifier
             .align(Alignment.CenterHorizontally)
-            .padding(5.dp)
+            .padding(padding)
             .onFocusChanged {
                 scope.launch {
                     scrollState.animateScrollTo(scrollState.maxValue)
@@ -162,7 +166,7 @@ fun RegisterComponent(navController: NavHostController, context: Context){
             label = { Text(text = "Password")},
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(5.dp)
+                .padding(padding)
                 .onFocusChanged {
                     scope.launch {
                         scrollState.animateScrollTo(scrollState.maxValue)
@@ -183,7 +187,7 @@ fun RegisterComponent(navController: NavHostController, context: Context){
             label = { Text(text = "Repeat password")},
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(5.dp)
+                .padding(padding)
                 .onFocusChanged {
                     scope.launch {
                         scrollState.animateScrollTo(scrollState.maxValue)
