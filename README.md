@@ -1,2 +1,2 @@
-# Shebetar
+# tctest
 Simple clone of twitter
