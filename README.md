@@ -1,2 +1,2 @@
 # tctest
-Simple clone of social network
+Simple social network
